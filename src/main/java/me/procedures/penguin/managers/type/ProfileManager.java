@@ -1,5 +1,6 @@
 package me.procedures.penguin.managers.type;
 
+import lombok.Getter;
 import me.procedures.penguin.player.impl.PlayerProfile;
 import org.bukkit.entity.Player;
 
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Getter
 public class ProfileManager {
 
     private Map<UUID, PlayerProfile> profiles = new HashMap<>();

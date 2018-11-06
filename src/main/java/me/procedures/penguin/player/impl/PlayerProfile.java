@@ -16,4 +16,8 @@ public class PlayerProfile {
     public PlayerProfile(UUID identifier) {
         this.identifier = identifier;
     }
+
+    public void save() {
+
+    }
 }
