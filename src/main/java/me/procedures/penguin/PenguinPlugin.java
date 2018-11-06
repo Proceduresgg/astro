@@ -15,7 +15,8 @@ public class PenguinPlugin extends JavaPlugin {
     private ProfileManager profileManager;
 
     public void onEnable() {
-
+        this.ladderManager = new LadderManager();
+        this.profileManager = new ProfileManager();
 
         this.registerListeners();
     }
