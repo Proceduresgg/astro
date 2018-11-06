@@ -1,7 +1,20 @@
-package me.procedures.penguin.ladder;
+package me.procedures.penguin.ladder.impl;
 
-public class Ladder {
-    private boolean allowHunger;
-    private boolean allowRegen;
-    private boolean 
+import me.procedures.penguin.ladder.api.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Ladder implements ILadder {
+
+    private String name;
+
+    private Map<LadderFlag, Boolean> ladderFlags = new HashMap<>();
+
+    public Ladder() {
+
+        for (LadderFlag flag : LadderFlag.values()) {
+            this.ladderFlags.put(flag, flag.getDefaultState());
+        }
+    }
 }
