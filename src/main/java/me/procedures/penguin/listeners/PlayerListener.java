@@ -1,9 +1,9 @@
 package me.procedures.penguin.listeners;
 
 import lombok.AllArgsConstructor;
-import me.procedures.penguin.managers.ManagerHandler;
-import me.procedures.penguin.player.impl.PlayerProfile;
-import me.procedures.penguin.utils.GameUtils;
+import me.procedures.penguin.PenguinPlugin;
+import me.procedures.penguin.player.PlayerProfile;
+import me.procedures.penguin.utils.GameUtil;
 import me.procedures.penguin.utils.StateInventories;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,21 +14,22 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @AllArgsConstructor
 public class PlayerListener implements Listener {
 
-    private ManagerHandler managerHandler;
+    private final PenguinPlugin plugin;
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile profile = this.managerHandler.getProfileManager().getProfile(player);
+        PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
 
-        GameUtils.resetPlayer(player);
+        GameUtil.resetPlayer(player);
         player.getInventory().setContents(StateInventories.LOBBY.getContents());
+        player.updateInventory();
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile profile = this.managerHandler.getProfileManager().getProfiles().remove(player.getUniqueId());
+        PlayerProfile profile = this.plugin.getProfileManager().getProfiles().remove(player.getUniqueId());
 
         profile.save();
     }

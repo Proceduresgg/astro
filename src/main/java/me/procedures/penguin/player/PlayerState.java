@@ -1,6 +1,7 @@
-package me.procedures.penguin.player.api;
+package me.procedures.penguin.player;
 
 public enum PlayerState {
+
     LOBBY,
     QUEUING,
     SPECTATING,

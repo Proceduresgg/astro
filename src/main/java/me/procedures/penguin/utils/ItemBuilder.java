@@ -14,6 +14,7 @@ public class ItemBuilder {
     private Material type;
     private String name;
     private String[] lore;
+
     private int amount;
     private short data = 0;
     private boolean unbreakable;
@@ -51,7 +52,7 @@ public class ItemBuilder {
     public ItemBuilder(Material type, String name, int amount, short data, List<String> lore) {
         this.type = type;
         this.name = name;
-        this.lore = lore.toArray( new String[lore.size()] );
+        this.lore = lore.toArray(new String[lore.size()]);
         this.amount = amount;
         this.data = data;
     }

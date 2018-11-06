@@ -1,5 +1,6 @@
-package me.procedures.penguin.player.impl;
+package me.procedures.penguin.player;
 
 public class PlayerRating {
+
     private int rating;
 }

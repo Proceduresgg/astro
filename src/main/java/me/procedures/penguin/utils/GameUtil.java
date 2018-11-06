@@ -3,7 +3,7 @@ package me.procedures.penguin.utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class GameUtils {
+public class GameUtil {
 
     public static void resetPlayer(Player player) {
         player.setCanPickupItems(false);
