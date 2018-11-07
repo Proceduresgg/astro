@@ -3,6 +3,7 @@ package me.procedures.penguin;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.procedures.penguin.commands.LadderCommand;
+import me.procedures.penguin.data.MongoDB;
 import me.procedures.penguin.listeners.PlayerListener;
 import me.procedures.penguin.managers.LadderManager;
 import me.procedures.penguin.managers.ProfileManager;
@@ -14,17 +15,21 @@ import java.util.Arrays;
 @Getter
 public class PenguinPlugin extends JavaPlugin {
 
-    public final static ChatColor serverColorBright = ChatColor.AQUA;
-    public final static ChatColor serverColorDim = ChatColor.GRAY;
+    public static final ChatColor serverColorBright = ChatColor.AQUA;
+    public static final ChatColor serverColorDim = ChatColor.GRAY;
 
     private LadderManager ladderManager;
     private ProfileManager profileManager;
+
+    private MongoDB mongoDB;
 
     private PaperCommandManager commandManager;
 
     public void onEnable() {
         this.ladderManager = new LadderManager();
-        this.profileManager = new ProfileManager();
+        this.profileManager = new ProfileManager(this);
+
+        this.mongoDB = new MongoDB();
 
         this.registerListeners();
     }

@@ -20,6 +20,13 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>mongo</id>
+            <url>https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>co.aikar</groupId>
@@ -51,6 +58,11 @@
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
             <version>0.4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.8.2</version>
         </dependency>
     </dependencies>
 </project>

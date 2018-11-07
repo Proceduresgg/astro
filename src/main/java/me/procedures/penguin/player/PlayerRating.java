@@ -8,4 +8,12 @@ import lombok.Setter;
 public class PlayerRating {
 
     private int rating;
+
+    public PlayerRating() {
+        this.rating = 1000;
+    }
+
+    public PlayerRating(int rating) {
+        this.rating = rating;
+    }
 }

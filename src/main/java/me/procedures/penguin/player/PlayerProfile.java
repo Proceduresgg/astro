@@ -1,9 +1,11 @@
 package me.procedures.penguin.player;
 
+import com.mongodb.client.MongoCollection;
 import lombok.Getter;
 import lombok.Setter;
 import me.procedures.penguin.kit.KitContainer;
 import me.procedures.penguin.ladder.impl.Ladder;
+import org.bson.Document;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +24,5 @@ public class PlayerProfile {
 
     public PlayerProfile(UUID identifier) {
         this.identifier = identifier;
-    }
-
-    public void save() {
-
     }
 }
