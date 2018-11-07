@@ -4,9 +4,7 @@ import lombok.Getter;
 import me.procedures.penguin.player.PlayerProfile;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 public class ProfileManager {
@@ -19,5 +17,11 @@ public class ProfileManager {
 
     public PlayerProfile getProfile(Player player) {
         return this.getProfile(player.getUniqueId());
+    }
+
+    public void saveProfiles() {
+        for (PlayerProfile profile : this.profiles.values()) {
+            profile.save();
+        }
     }
 }

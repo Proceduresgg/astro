@@ -15,6 +15,8 @@ public class Ladder implements ILadder {
 
     private String name;
 
+    private int displayOrder;
+
     public Ladder(String name) {
         this.name = name;
 

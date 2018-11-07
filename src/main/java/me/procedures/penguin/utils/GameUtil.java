@@ -6,8 +6,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class GameUtil {
 
-    public static final int kFactor = 32;
-
     public static void resetPlayer(Player player) {
         player.setCanPickupItems(false);
 
@@ -22,6 +20,8 @@ public class GameUtil {
     }
 
     public static void updateRating(PlayerRating winner, PlayerRating loser) {
+        double kfactor = 32;
+
         double winnerRating = (double) winner.getRating();
         double loserRating = (double) loser.getRating();
 
@@ -31,8 +31,8 @@ public class GameUtil {
         double winnerExpected = winnerRating / (winnerRating + loserRating);
         double loserExpected = loserRating / (loserRating + winnerRating);
 
-        winnerRating = winner.getRating() + 32 * (1 - winnerExpected);
-        loserRating = loser.getRating() + 32 * (0 - loserExpected);
+        winnerRating = winner.getRating() + kfactor * (1 - winnerExpected);
+        loserRating = loser.getRating() + kfactor * (0 - loserExpected);
 
         winner.setRating((int) winnerRating);
         loser.setRating((int) loserRating);

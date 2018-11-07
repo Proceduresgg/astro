@@ -21,6 +21,11 @@ public class PenguinPlugin extends JavaPlugin {
         this.registerListeners();
     }
 
+    public void onDisable() {
+        this.ladderManager.saveLadders();
+        this.profileManager.saveProfiles();
+    }
+
     private void registerListeners() {
         Arrays.asList(new PlayerListener(this)).forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
     }
