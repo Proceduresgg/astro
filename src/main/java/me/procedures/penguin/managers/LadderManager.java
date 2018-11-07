@@ -18,7 +18,9 @@ public class LadderManager {
     }
 
     public void saveLadders() {
-
+        for (Ladder ladder : ladders.values()) {
+            ladder.save();
+        }
     }
 
     public void loadLadders() {

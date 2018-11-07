@@ -2,7 +2,9 @@ package me.procedures.penguin.ladder.impl;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.procedures.penguin.kit.KitInventory;
 import me.procedures.penguin.ladder.api.*;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,9 @@ public class Ladder implements ILadder {
 
     private String name;
 
+    private KitInventory defaultInventory;
+    private ItemStack displayItem;
+
     private int displayOrder;
 
     public Ladder(String name) {
@@ -23,5 +28,9 @@ public class Ladder implements ILadder {
         for (LadderFlag flag : LadderFlag.values()) {
             this.ladderFlags.put(flag, flag.isDefaultFlag());
         }
+    }
+
+    public void save() {
+
     }
 }
