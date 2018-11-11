@@ -7,6 +7,7 @@ import me.procedures.penguin.arena.Arena;
 import me.procedures.penguin.ladder.impl.Ladder;
 import me.procedures.penguin.player.PlayerProfile;
 import me.procedures.penguin.player.PlayerState;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -59,6 +60,40 @@ public abstract class AbstractMatch {
 
                 player.showPlayer(opponent);
             }
+        }
+    }
+
+    public void resetPlayers(Player... players) {
+        for (Player player : players) {
+            PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
+
+            player.setMaximumNoDamageTicks(20);
+
+            profile.setState(PlayerState.LOBBY);
+        }
+    }
+
+    public void cleanSpectators() {
+
+    }
+
+    public void playSound(Sound sound, float idk2, Player... players) {
+        for (Player player : players) {
+            player.playSound(player.getLocation(), sound, 10.0f, idk2);
+        }
+
+        for (Player spectator : this.getSpectators()) {
+            spectator.playSound(spectator.getLocation(), sound, 10.0F, idk2);
+        }
+    }
+
+    public void sendMessage(String message, Player... players) {
+        for (Player player : players) {
+            player.sendMessage(message);
+        }
+
+        for (Player spectator : this.getSpectators()) {
+            spectator.sendMessage(message);
         }
     }
 }
