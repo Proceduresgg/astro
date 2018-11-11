@@ -7,6 +7,7 @@ import me.procedures.penguin.data.MongoDB;
 import me.procedures.penguin.listeners.PlayerListener;
 import me.procedures.penguin.managers.LadderManager;
 import me.procedures.penguin.managers.ProfileManager;
+import me.procedures.penguin.utils.PlayerHider;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,6 +22,8 @@ public class PenguinPlugin extends JavaPlugin {
     private LadderManager ladderManager;
     private ProfileManager profileManager;
 
+    private PlayerHider playerHider;
+
     private MongoDB mongoDB;
 
     private PaperCommandManager commandManager;
@@ -28,6 +31,8 @@ public class PenguinPlugin extends JavaPlugin {
     public void onEnable() {
         this.ladderManager = new LadderManager();
         this.profileManager = new ProfileManager(this);
+
+        this.playerHider = new PlayerHider();
 
         this.mongoDB = new MongoDB();
 
