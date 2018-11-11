@@ -34,15 +34,15 @@ public class ProfileManager {
         MongoCollection<Document> collection = mongoDatabase.getCollection("profiles");
 
         for (PlayerProfile profile : this.profiles.values()) {
-            UUID identifier = profile.getIdentifier();
+            UUID identifier = profile.getUuid();
 
-            Document document = collection.find(new Document("uuid", identifier)).first();//new Document("uuid", profile.getIdentifier().toString());
+            Document document = collection.find(new Document("uuid", identifier)).first();//new Document("uuid", profile.getUuid().toString());
 
             if (document == null) {
                 document = new Document("uuid", identifier);
             }
 
-            for (Map.Entry<Ladder, PlayerRating> entry : profile.getRatingMap().entrySet()) {
+            for (Map.Entry<Ladder, PlayerRating> entry : profile.getRatings().entrySet()) {
                 document.append(entry.getKey().getName(), entry.getValue().getRating());
             }
 

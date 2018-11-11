@@ -15,26 +15,27 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public abstract class Match {
+public abstract class AbstractMatch {
 
     private final PenguinPlugin plugin;
 
-    private UUID identifier;
+    private final List<Player> spectators = new ArrayList<>();
+
+    private UUID uuid;
     private Ladder ladder;
-    private Long startMillis;
     private Arena arena;
 
-    private MatchStatus matchStatus = MatchStatus.STARTING;
+    private MatchStatus status = MatchStatus.STARTING;
 
-    private List<Player> spectators = new ArrayList<>();
+    private long startTime;
 
-    public Match(PenguinPlugin plugin) {
+    public AbstractMatch(PenguinPlugin plugin) {
         this.plugin = plugin;
-        this.identifier = UUID.randomUUID();
+        this.uuid = UUID.randomUUID();
     }
 
     public void startMatch() {
-        this.startMillis = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis();
     }
 
     public void spawnPlayers(Player... players) {
@@ -47,11 +48,12 @@ public abstract class Match {
             player.setFlying(false);
 
             this.getPlugin().getPlayerHider().hideAllPlayers(player);
-
-            profile.setPlayerState(PlayerState.FIGHTING);
+            profile.setState(PlayerState.FIGHTING);
 
             for (Player opponent : players) {
-                if (opponent == player) continue;
+                if (opponent == player) {
+                	continue;
+                }
 
                 player.showPlayer(opponent);
             }

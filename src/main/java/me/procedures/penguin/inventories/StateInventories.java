@@ -1,7 +1,8 @@
-package me.procedures.penguin.utils;
+package me.procedures.penguin.inventories;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import me.procedures.penguin.utils.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

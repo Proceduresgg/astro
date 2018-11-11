@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import me.procedures.penguin.PenguinPlugin;
 import me.procedures.penguin.player.PlayerProfile;
 import me.procedures.penguin.utils.GameUtil;
-import me.procedures.penguin.utils.StateInventories;
+import me.procedures.penguin.inventories.StateInventories;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
