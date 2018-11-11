@@ -5,12 +5,12 @@ import me.procedures.penguin.PenguinPlugin;
 import org.bukkit.entity.Player;
 
 @Getter
-public abstract class SoloMatch extends AbstractMatch {
+public abstract class AbstractSoloMatch extends AbstractMatch {
 
     private Player playerOne;
     private Player playerTwo;
 
-    public SoloMatch(PenguinPlugin plugin, Player playerOne, Player playerTwo) {
+    public AbstractSoloMatch(PenguinPlugin plugin, Player playerOne, Player playerTwo) {
         super(plugin);
 
         this.playerOne = playerOne;

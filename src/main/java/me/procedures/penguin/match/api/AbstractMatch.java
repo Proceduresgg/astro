@@ -36,6 +36,7 @@ public abstract class AbstractMatch {
 
     public void startMatch() {
         this.startTime = System.currentTimeMillis();
+        this.status = MatchStatus.ONGOING;
     }
 
     public void spawnPlayers(Player... players) {
@@ -47,8 +48,9 @@ public abstract class AbstractMatch {
             player.setAllowFlight(false);
             player.setFlying(false);
 
-            this.getPlugin().getPlayerHider().hideAllPlayers(player);
             profile.setState(PlayerState.FIGHTING);
+
+            this.getPlugin().getPlayerUtil().hideAllPlayers(player);
 
             for (Player opponent : players) {
                 if (opponent == player) {
