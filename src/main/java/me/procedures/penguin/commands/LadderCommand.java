@@ -92,12 +92,12 @@ public class LadderCommand extends BaseCommand {
             player.sendMessage(PenguinPlugin.serverColorBright + "You need to specific what order the ladder must be.");
             return;
 
-        } else if (Integer.parseInt(args[0]) > 54 || Integer.parseInt(args[0]) < 0) {
+        } else if (Integer.parseInt(args[1]) > 54 || Integer.parseInt(args[1]) < 0) {
             player.sendMessage(PenguinPlugin.serverColorBright + "You need to specify an order within 0 - 54.");
             return;
         }
 
-        int order = Integer.parseInt(args[0]);
+        int order = Integer.parseInt(args[1]);
 
         Ladder ladder = this.plugin.getLadderManager().getLadders().get(args[0]);
 

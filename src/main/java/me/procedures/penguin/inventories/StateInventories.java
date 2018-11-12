@@ -23,7 +23,7 @@ public enum StateInventories {
             new ItemBuilder(Material.DIAMOND_SWORD, ChatColor.GRAY + ChatColor.BOLD.toString() + "Join" + ChatColor.AQUA + ChatColor.BOLD.toString() + " Ranked " + ChatColor.GRAY + ChatColor.BOLD.toString() + "Queue", ChatColor.GRAY + "Right click to queue ranked.").getItem(),}),
 
     SPECTATOR(new ItemStack[] {
-            new ItemBuilder(Material.INK_SACK, ChatColor.RED + ChatColor.BOLD.toString() + "Stop Spectating", 1, (short)1, ChatColor.GRAY + "Right Click to stop spectating.").getItem(),
+            new ItemBuilder(Material.INK_SACK, ChatColor.RED + ChatColor.BOLD.toString() + "Stop Spectating", 1, (short) 1, ChatColor.GRAY + "Right Click to stop spectating.").getItem(),
             new ItemBuilder(Material.PAPER, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Spectator Information", ChatColor.GRAY + "Right Click to get", ChatColor.GRAY + "spectator information.").getItem(),
             null,
             null,
