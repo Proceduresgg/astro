@@ -18,17 +18,17 @@ public class LadderCommand extends BaseCommand {
 
     @Default
     public void onDefault(Player player) {
-        player.sendMessage(PenguinPlugin.serverColorBright + "Usage: /ladder [create, delete, setdefaultinventory, setorder, setname]");
+        player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "Usage: /ladder [create, delete, setdefaultinventory, setorder, setname]");
     }
 
     @Subcommand("create")
     public void onCreate(Player player, String[] args) {
         if (args.length == 0) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "Usage: /ladder create [name]");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "Usage: /ladder create [name]");
             return;
 
         } else if (this.plugin.getLadderManager().getLadders().containsKey(args[0].toLowerCase())) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "That ladder already exists.");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "That ladder already exists.");
             return;
         }
 
@@ -38,33 +38,33 @@ public class LadderCommand extends BaseCommand {
 
         ladder.save();
 
-        player.sendMessage(PenguinPlugin.serverColorBright + "That ladder has been created.");
+        player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "That ladder has been created.");
     }
 
     @Subcommand("delete")
     public void onDelete(Player player, String[] args) {
         if (args.length == 0) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "Usage: /ladder delete [name]");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "Usage: /ladder delete [name]");
             return;
 
         } else if (!this.plugin.getLadderManager().getLadders().containsKey(args[0].toLowerCase())) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "That ladder does not exist.");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "That ladder does not exist.");
             return;
         }
 
         this.plugin.getLadderManager().getLadders().remove(args[0]);
 
-        player.sendMessage(PenguinPlugin.serverColorBright + "That ladder has been deleted.");
+        player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "That ladder has been deleted.");
     }
 
     @Subcommand("setdefaultinventory")
     public void onSetDefaultInventory(Player player, String[] args) {
         if (args.length == 0) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "Usage: /ladder setdefaultinventory [name]");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "Usage: /ladder setdefaultinventory [name]");
             return;
 
         } else if (!this.plugin.getLadderManager().getLadders().containsKey(args[0].toLowerCase())) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "That ladder does not exist.");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "That ladder does not exist.");
             return;
         }
 
@@ -75,25 +75,25 @@ public class LadderCommand extends BaseCommand {
         ladder.setDefaultInventory(kitInventory);
         ladder.save();
 
-        player.sendMessage(PenguinPlugin.serverColorBright + "The default inventory for that ladder has been updated.");
+        player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "The default inventory for that ladder has been updated.");
     }
 
     @Subcommand("setorder")
     public void onSetOrder(Player player, String[] args) {
         if (args.length < 2) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "Usage: /ladder setorder [name] order");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "Usage: /ladder setorder [name] order");
             return;
 
         } else if (!this.plugin.getLadderManager().getLadders().containsKey(args[0].toLowerCase())) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "That ladder does not exist.");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "That ladder does not exist.");
             return;
 
         } else if (!StringUtil.isNumeric(args[1])) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "You need to specific what order the ladder must be.");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "You need to specific what order the ladder must be.");
             return;
 
         } else if (Integer.parseInt(args[1]) > 54 || Integer.parseInt(args[1]) < 0) {
-            player.sendMessage(PenguinPlugin.serverColorBright + "You need to specify an order within 0 - 54.");
+            player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "You need to specify an order within 0 - 54.");
             return;
         }
 
@@ -104,6 +104,6 @@ public class LadderCommand extends BaseCommand {
         ladder.setDisplayOrder(order);
         ladder.save();
 
-        player.sendMessage(PenguinPlugin.serverColorBright + "The display order for that ladder has been set.");
+        player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "The display order for that ladder has been set.");
     }
 }

@@ -64,5 +64,10 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>3.8.2</version>
         </dependency>
+        <dependency>
+            <groupId>us.rengo.procedures</groupId>
+            <artifactId>Milk</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

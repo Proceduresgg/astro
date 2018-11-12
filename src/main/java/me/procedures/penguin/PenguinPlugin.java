@@ -16,8 +16,8 @@ import java.util.Arrays;
 @Getter
 public class PenguinPlugin extends JavaPlugin {
 
-    public static final ChatColor serverColorBright = ChatColor.AQUA;
-    public static final ChatColor serverColorDim = ChatColor.GRAY;
+    public static final ChatColor SERVER_COLOR_BRIGHT = ChatColor.AQUA;
+    public static final ChatColor SERVER_COLOR_DIM = ChatColor.GRAY;
 
     private LadderManager ladderManager;
     private ProfileManager profileManager;
