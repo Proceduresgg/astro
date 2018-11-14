@@ -28,14 +28,6 @@ public abstract class AbstractSoloMatch extends AbstractMatch {
         this.playerTwo.teleport(this.getArena().getSpawnTwo());
 
         this.spawnPlayers(playerOne, playerTwo);
-
-        if (ranked) {
-            playerOne.sendMessage(PenguinPlugin.SERVER_COLOR_LIGHT + "Your Opponent: " + PenguinPlugin.SERVER_COLOR_BRIGHT + playerTwo.getName());
-            playerTwo.sendMessage(PenguinPlugin.SERVER_COLOR_LIGHT + "Your Opponent: " + PenguinPlugin.SERVER_COLOR_BRIGHT + playerOne.getName());
-        } else {
-            playerOne.sendMessage(PenguinPlugin.SERVER_COLOR_LIGHT + "Your Opponent: " + PenguinPlugin.SERVER_COLOR_BRIGHT + playerTwo.getName());
-            playerTwo.sendMessage(PenguinPlugin.SERVER_COLOR_LIGHT + "Your Opponent: " + PenguinPlugin.SERVER_COLOR_BRIGHT + playerOne.getName());
-        }
     }
 
     public void endMatch(Player winner, Player loser) {

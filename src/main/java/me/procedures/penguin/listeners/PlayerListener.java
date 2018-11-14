@@ -31,10 +31,10 @@ public class PlayerListener implements Listener {
         Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.hidePlayer(player));
 
         Bukkit.getOnlinePlayers().stream()
-                .filter(onlinePlayer -> !onlinePlayer.hasPermission("procedures.donor"))
+                .filter(onlinePlayer -> !onlinePlayer.hasPermission("gg.donor"))
                 .forEach(player::hidePlayer);
 
-        player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "Welcome to Penguin Practice - This plugin was created by @Procedvres and @dewgsgg.");
+        player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "Practice remastered, " + PenguinPlugin.SERVER_COLOR_LIGHT + "Created by Procedures / Dewgs.");
 
     }
 
