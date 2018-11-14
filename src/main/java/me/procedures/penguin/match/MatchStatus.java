@@ -1,4 +1,4 @@
-package me.procedures.penguin.match.api;
+package me.procedures.penguin.match;
 
 public enum MatchStatus {
 

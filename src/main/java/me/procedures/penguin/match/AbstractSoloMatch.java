@@ -1,4 +1,4 @@
-package me.procedures.penguin.match.api;
+package me.procedures.penguin.match;
 
 import lombok.Getter;
 import me.procedures.penguin.PenguinPlugin;
@@ -16,6 +16,8 @@ public abstract class AbstractSoloMatch extends AbstractMatch {
     private Player playerOne;
     private Player playerTwo;
 
+    private boolean ranked;
+
     public AbstractSoloMatch(PenguinPlugin plugin, Player playerOne, Player playerTwo) {
         super(plugin);
 
@@ -26,6 +28,14 @@ public abstract class AbstractSoloMatch extends AbstractMatch {
         this.playerTwo.teleport(this.getArena().getSpawnTwo());
 
         this.spawnPlayers(playerOne, playerTwo);
+
+        if (ranked) {
+            playerOne.sendMessage(PenguinPlugin.SERVER_COLOR_LIGHT + "Your Opponent: " + PenguinPlugin.SERVER_COLOR_BRIGHT + playerTwo.getName());
+            playerTwo.sendMessage(PenguinPlugin.SERVER_COLOR_LIGHT + "Your Opponent: " + PenguinPlugin.SERVER_COLOR_BRIGHT + playerOne.getName());
+        } else {
+            playerOne.sendMessage(PenguinPlugin.SERVER_COLOR_LIGHT + "Your Opponent: " + PenguinPlugin.SERVER_COLOR_BRIGHT + playerTwo.getName());
+            playerTwo.sendMessage(PenguinPlugin.SERVER_COLOR_LIGHT + "Your Opponent: " + PenguinPlugin.SERVER_COLOR_BRIGHT + playerOne.getName());
+        }
     }
 
     public void endMatch(Player winner, Player loser) {

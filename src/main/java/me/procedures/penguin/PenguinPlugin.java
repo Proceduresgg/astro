@@ -4,6 +4,7 @@ import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.procedures.penguin.commands.LadderCommand;
 import me.procedures.penguin.data.MongoDB;
+import me.procedures.penguin.listeners.ChatListener;
 import me.procedures.penguin.listeners.PlayerListener;
 import me.procedures.penguin.managers.LadderManager;
 import me.procedures.penguin.managers.ProfileManager;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 public class PenguinPlugin extends JavaPlugin {
 
     public static final ChatColor SERVER_COLOR_BRIGHT = ChatColor.AQUA;
+    public static final ChatColor SERVER_COLOR_LIGHT = ChatColor.YELLOW;
     public static final ChatColor SERVER_COLOR_DIM = ChatColor.GRAY;
 
     private LadderManager ladderManager;
@@ -45,7 +47,7 @@ public class PenguinPlugin extends JavaPlugin {
     }
 
     private void registerListeners() {
-        Arrays.asList(new PlayerListener(this)).forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
+        Arrays.asList(new PlayerListener(this), new ChatListener(this)).forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void registerCommands() {

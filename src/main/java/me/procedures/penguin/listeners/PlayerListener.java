@@ -6,6 +6,7 @@ import me.procedures.penguin.player.PlayerProfile;
 import me.procedures.penguin.utils.GameUtil;
 import me.procedures.penguin.inventories.StateInventories;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,6 +33,8 @@ public class PlayerListener implements Listener {
         Bukkit.getOnlinePlayers().stream()
                 .filter(onlinePlayer -> !onlinePlayer.hasPermission("procedures.donor"))
                 .forEach(player::hidePlayer);
+
+        player.sendMessage(PenguinPlugin.SERVER_COLOR_BRIGHT + "Welcome to Penguin Practice - This plugin was created by @Procedvres and @dewgsgg.");
 
     }
 
