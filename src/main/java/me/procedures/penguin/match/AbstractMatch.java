@@ -11,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,15 +52,11 @@ public abstract class AbstractMatch {
 
             profile.setState(PlayerState.FIGHTING);
 
+            Arrays.stream(players)
+                    .filter(opponent -> opponent != player)
+                    .forEach(player::showPlayer);
+
             this.getPlugin().getPlayerUtil().hideAllPlayers(player);
-
-            for (Player opponent : players) {
-                if (opponent == player) {
-                	continue;
-                }
-
-                player.showPlayer(opponent);
-            }
         }
     }
 
@@ -78,22 +75,14 @@ public abstract class AbstractMatch {
     }
 
     public void playSound(Sound sound, float idk2, Player... players) {
-        for (Player player : players) {
-            player.playSound(player.getLocation(), sound, 10.0f, idk2);
-        }
+        Arrays.stream(players).forEach(player -> player.playSound(player.getLocation(), sound, 10.0f, idk2));
 
-        for (Player spectator : this.getSpectators()) {
-            spectator.playSound(spectator.getLocation(), sound, 10.0F, idk2);
-        }
+        this.getSpectators().forEach(spectator -> spectator.playSound(spectator.getLocation(), sound, 10.0F, idk2));
     }
 
     public void sendMessage(String message, Player... players) {
-        for (Player player : players) {
-            player.sendMessage(message);
-        }
+        Arrays.stream(players).forEach(player -> player.sendMessage(message));
 
-        for (Player spectator : this.getSpectators()) {
-            spectator.sendMessage(message);
-        }
+        this.getSpectators().forEach(spectator -> spectator.sendMessage(message));
     }
 }

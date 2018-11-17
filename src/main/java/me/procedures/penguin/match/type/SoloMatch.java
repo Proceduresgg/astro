@@ -1,8 +1,10 @@
-package me.procedures.penguin.match;
+package me.procedures.penguin.match.type;
 
 import lombok.Getter;
 import me.procedures.penguin.PenguinPlugin;
 import me.procedures.penguin.inventories.StateInventories;
+import me.procedures.penguin.match.AbstractMatch;
+import me.procedures.penguin.match.MatchOption;
 import me.procedures.penguin.player.PlayerProfile;
 import me.procedures.penguin.utils.GameUtil;
 import org.bukkit.Location;
@@ -10,24 +12,30 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collection;
+import java.util.Set;
+
 @Getter
-public abstract class AbstractSoloMatch extends AbstractMatch {
+public class SoloMatch extends AbstractMatch {
 
     private Player playerOne;
     private Player playerTwo;
 
-    private boolean ranked;
+    private Set<MatchOption> matchOptions;
 
-    public AbstractSoloMatch(PenguinPlugin plugin, Player playerOne, Player playerTwo) {
+    public SoloMatch(PenguinPlugin plugin, Player playerOne, Player playerTwo, Set<MatchOption> matchOptions) {
         super(plugin);
 
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
+        this.matchOptions = matchOptions;
 
         this.playerOne.teleport(this.getArena().getSpawnOne());
         this.playerTwo.teleport(this.getArena().getSpawnTwo());
 
         this.spawnPlayers(playerOne, playerTwo);
+
+        this.matchOptions.forEach(matchOption -> matchOption.startPreGame(playerOne, playerTwo));
     }
 
     public void endMatch(Player winner, Player loser) {
