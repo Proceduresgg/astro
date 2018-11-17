@@ -13,6 +13,8 @@ public class QueuePlayer {
     private int min;
     private int max;
 
+    private final long insertionTime = System.currentTimeMillis();
+
     public QueuePlayer(Player player) {
         this.player = player;
     }
