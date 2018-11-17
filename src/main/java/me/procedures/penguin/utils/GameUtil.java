@@ -15,6 +15,9 @@ public class GameUtil {
 
         player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
 
+        //Clears all the arrows from a players body (Note: only for v1_8_3 server)
+        ((CraftPlayer) player).getHandle().getDataWatcher().watch(9, (byte) 0);
+
         player.setHealth(20);
         player.setFoodLevel(20);
         player.setFireTicks(1);

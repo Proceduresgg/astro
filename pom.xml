@@ -43,13 +43,20 @@
     </build>
 
     <repositories>
+        <!--For Mongo-->
         <repository>
             <id>mongo</id>
             <url>https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver</url>
         </repository>
+        <!--For Command Framework-->
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <!--Command Framework-->
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
