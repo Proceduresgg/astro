@@ -13,14 +13,14 @@ public class GameUtil {
         player.getInventory().clear();
         player.getInventory().setArmorContents(new ItemStack[4]);
 
-        player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
-
-        //Clears all the arrows from a players body (Note: only for v1_8_3 server)
-        ((CraftPlayer) player).getHandle().getDataWatcher().watch(9, (byte) 0);
-
         player.setHealth(20);
         player.setFoodLevel(20);
         player.setFireTicks(1);
+
+        player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+
+        //Clears all the arrows from a players body (Note: only for v1_8_3 server)
+        //((CraftPlayer) player).getHandle().getDataWatcher().watch(9, (byte) 0);
     }
 
     public static void updateRating(PlayerRating winner, PlayerRating loser) {

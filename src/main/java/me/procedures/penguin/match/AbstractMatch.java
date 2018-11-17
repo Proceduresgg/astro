@@ -75,14 +75,22 @@ public abstract class AbstractMatch {
     }
 
     public void playSound(Sound sound, float idk2, Player... players) {
-        Arrays.stream(players).forEach(player -> player.playSound(player.getLocation(), sound, 10.0f, idk2));
+        for (Player player : players) {
+            player.playSound(player.getLocation(), sound, 10.0f, idk2);
+        }
 
-        this.getSpectators().forEach(spectator -> spectator.playSound(spectator.getLocation(), sound, 10.0F, idk2));
+        for (Player spectator : this.getSpectators()) {
+            spectator.playSound(spectator.getLocation(), sound, 10.0F, idk2);
+        }
     }
 
     public void sendMessage(String message, Player... players) {
-        Arrays.stream(players).forEach(player -> player.sendMessage(message));
+        for (Player player : players) {
+            player.sendMessage(message);
+        }
 
-        this.getSpectators().forEach(spectator -> spectator.sendMessage(message));
+        for (Player spectator : this.getSpectators()) {
+            spectator.sendMessage(message);
+        }
     }
 }
