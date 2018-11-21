@@ -1,4 +1,5 @@
-name: PenguinPractice
+name: Astro
 author: Procedures / Dewgs
 version: 0.1
-main: me.procedures.penguin.PenguinPlugin
+main: me.procedures.astro.AstroPlugin
+description: The practice gamemode remastered
