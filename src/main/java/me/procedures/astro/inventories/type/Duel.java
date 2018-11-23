@@ -24,6 +24,11 @@ public class Duel extends AbstractInventory {
     }
 
     @Override
+    public void open(Player player) {
+
+    }
+
+    @Override
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().contains("Choose ladder")) {

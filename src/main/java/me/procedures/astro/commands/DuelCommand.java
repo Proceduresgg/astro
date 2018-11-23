@@ -21,6 +21,6 @@ public class DuelCommand extends BaseCommand {
     public void onDefault(Player player, Player target) {
         if (player == target) player.sendMessage("cant duel yo self lil nigga LOOL");
 
-        player.openInventory(this.plugin.getMenuManager().getDuelInventory().toBukkitInventory());
+        this.plugin.getMenuManager().getDuelInventory().open(player);
     }
 }

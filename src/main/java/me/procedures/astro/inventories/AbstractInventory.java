@@ -34,13 +34,6 @@ public abstract class AbstractInventory implements Listener {
 
     public abstract void open(Player player);
 
-    public Inventory toBukkitInventory() {
-        Inventory inventory = Bukkit.createInventory(null, this.size, this.title);
-        this.contents.forEach(inventory::addItem);
-
-        return inventory;
-    }
-
     @EventHandler
     public void onClick(InventoryClickEvent event) {
     }
