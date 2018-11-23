@@ -1,4 +1,4 @@
-package me.procedures.astro.ladder.api;
+package me.procedures.astro.ladder;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

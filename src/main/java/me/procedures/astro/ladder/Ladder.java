@@ -1,4 +1,4 @@
-package me.procedures.astro.ladder.impl;
+package me.procedures.astro.ladder;
 
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.kit.KitInventory;
-import me.procedures.astro.ladder.api.ILadder;
-import me.procedures.astro.ladder.api.LadderFlag;
 import org.bson.Document;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +24,7 @@ public class Ladder implements ILadder {
     private KitInventory defaultInventory = new KitInventory();
     private ItemStack displayItem = new ItemStack(Material.DIAMOND_SWORD);
 
-    private int displayOrder = 27;
+    private int displayOrder = 20;
 
     public Ladder(String name) {
         this.name = name;
@@ -37,7 +35,8 @@ public class Ladder implements ILadder {
     }
 
     public void save() {
-        Document document = new Document("display-order", this.displayOrder);
+        Document document = new Document("name", this.name)
+                .append("display-order", this.displayOrder);
 
         this.ladderFlags.keySet().forEach(flag -> document.append(flag.toString(), this.ladderFlags.get(flag)));
 
@@ -45,7 +44,8 @@ public class Ladder implements ILadder {
     }
 
     public void load(Document document) {
-        this.displayOrder = document.getInteger("display-order");
+        System.out.println("loaded " + this.name);
+        this.displayOrder = 20;
 
         for (LadderFlag flag : LadderFlag.values()) {
             this.ladderFlags.put(flag, document.getBoolean(flag.toString()));

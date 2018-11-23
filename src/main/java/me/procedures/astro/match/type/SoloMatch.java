@@ -3,10 +3,12 @@ package me.procedures.astro.match.type;
 import lombok.Getter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.inventories.StateInventories;
+import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.match.AbstractMatch;
 import me.procedures.astro.match.MatchOption;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.utils.GameUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -22,15 +24,15 @@ public class SoloMatch extends AbstractMatch {
 
     private Set<MatchOption> matchOptions;
 
-    public SoloMatch(AstroPlugin plugin, Player playerOne, Player playerTwo, Set<MatchOption> matchOptions) {
-        super(plugin);
+    public SoloMatch(AstroPlugin plugin, Ladder ladder, Player playerOne, Player playerTwo, Set<MatchOption> matchOptions) {
+        super(plugin, ladder);
 
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.matchOptions = matchOptions;
 
-        this.playerOne.teleport(this.getArena().getSpawnOne());
-        this.playerTwo.teleport(this.getArena().getSpawnTwo());
+        this.playerOne.teleport(Bukkit.getWorld("world").getSpawnLocation());
+        this.playerTwo.teleport(Bukkit.getWorld("world").getSpawnLocation());
 
         this.spawnPlayers(playerOne, playerTwo);
 

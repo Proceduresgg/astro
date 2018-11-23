@@ -3,9 +3,10 @@ package me.procedures.astro;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
+import me.procedures.astro.commands.DuelCommand;
 import me.procedures.astro.commands.LadderCommand;
 import me.procedures.astro.data.Mongo;
-import me.procedures.astro.ladder.impl.Ladder;
+import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.listeners.ChatListener;
 import me.procedures.astro.listeners.PlayerListener;
 import me.procedures.astro.managers.LadderManager;
@@ -41,7 +42,7 @@ public class AstroPlugin extends JavaPlugin {
 
         this.mongo = new Mongo();
 
-        this.ladderManager = new LadderManager();
+        this.ladderManager = new LadderManager(this);
         this.profileManager = new ProfileManager(this);
         this.queueManager = new QueueManager(this);
         this.menuManager = new MenuManager(this);
@@ -64,7 +65,7 @@ public class AstroPlugin extends JavaPlugin {
     private void registerCommands(PaperCommandManager commandManager) {
         this.registerContexts(commandManager);
 
-        Arrays.asList(new LadderCommand()).forEach(commandManager::registerCommand);
+        Arrays.asList(new LadderCommand(), new DuelCommand()).forEach(commandManager::registerCommand);
     }
 
     private void registerContexts(PaperCommandManager commandManager) {

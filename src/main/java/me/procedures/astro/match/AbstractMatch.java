@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.arena.Arena;
-import me.procedures.astro.ladder.impl.Ladder;
+import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
+import me.procedures.astro.utils.GameUtil;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -31,7 +32,7 @@ public abstract class AbstractMatch {
 
     private long startTime;
 
-    public AbstractMatch(AstroPlugin plugin) {
+    public AbstractMatch(AstroPlugin plugin, Ladder ladder) {
         this.plugin = plugin;
         this.uuid = UUID.randomUUID();
     }
@@ -51,12 +52,16 @@ public abstract class AbstractMatch {
             player.setFlying(false);
 
             profile.setState(PlayerState.FIGHTING);
+            profile.setMatch(this);
 
             Arrays.stream(players)
                     .filter(opponent -> opponent != player)
                     .forEach(player::showPlayer);
 
             this.getPlugin().getPlayerUtil().hideAllPlayers(player);
+
+            GameUtil.resetPlayer(player);
+            player.getInventory().setContents(profile.getKits(ladder));
         }
     }
 

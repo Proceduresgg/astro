@@ -1,8 +1,7 @@
 package me.procedures.astro.queue.impl;
 
 import me.procedures.astro.AstroPlugin;
-import me.procedures.astro.ladder.impl.Ladder;
-import me.procedures.astro.queue.api.AbstractQueue;
+import me.procedures.astro.ladder.Ladder;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Iterator;

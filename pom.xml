@@ -53,11 +53,6 @@
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
-        <!--For Menu API-->
-        <repository>
-            <id>inventive-repo</id>
-            <url>https://repo.inventivetalent.org/content/groups/public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -79,13 +74,6 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--Menu API-->
-        <dependency>
-            <groupId>org.inventivetalent</groupId>
-            <artifactId>menubuilder</artifactId>
-            <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->

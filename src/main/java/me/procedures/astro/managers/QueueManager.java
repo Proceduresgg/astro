@@ -2,8 +2,8 @@ package me.procedures.astro.managers;
 
 import lombok.Getter;
 import me.procedures.astro.AstroPlugin;
-import me.procedures.astro.ladder.impl.Ladder;
-import me.procedures.astro.queue.api.AbstractQueue;
+import me.procedures.astro.ladder.Ladder;
+import me.procedures.astro.queue.impl.AbstractQueue;
 import me.procedures.astro.queue.impl.UnrankedQueue;
 
 import java.util.HashMap;

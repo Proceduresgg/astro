@@ -2,10 +2,13 @@ package me.procedures.astro.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.kit.KitInventory;
-import me.procedures.astro.ladder.impl.Ladder;
+import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.utils.InventoryUtil;
+import org.bson.Document;
 import org.bukkit.entity.Player;
 
 @CommandAlias("ladder")
@@ -38,6 +41,19 @@ public class LadderCommand extends BaseCommand {
     @Subcommand("delete")
     public void onDelete(Player player, Ladder ladder) {
         this.plugin.getLadderManager().getLadders().remove(ladder.getName());
+
+        MongoCollection<Document> collection = this.plugin.getMongo().getPracticeDatabase().getCollection("ladders");
+        try (MongoCursor<Document> cursor = collection.find().iterator()) {
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+
+                if (document.getString("name").equals(ladder.getName())) {
+                    collection.deleteOne(document);
+                    break;
+                }
+            }
+        }
+
         player.sendMessage(AstroPlugin.SERVER_COLOR_BRIGHT + "That ladder has been deleted.");
     }
 

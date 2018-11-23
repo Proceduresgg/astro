@@ -2,11 +2,14 @@ package me.procedures.astro.listeners;
 
 import lombok.AllArgsConstructor;
 import me.procedures.astro.AstroPlugin;
+import me.procedures.astro.inventories.StateInventories;
+import me.procedures.astro.kit.KitInventory;
+import me.procedures.astro.match.AbstractMatch;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.GameUtil;
-import me.procedures.astro.inventories.StateInventories;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -84,14 +87,31 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
+
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack item = event.getItem();
 
             if (item == null || item.getType() == Material.AIR || item.getItemMeta().getDisplayName() == null) {
-                event.setCancelled(false);
+                return;
+            }
 
-            } else if (item.getItemMeta().getDisplayName().contains("Ranked")) {
-                this.plugin.getMenuManager().getRankedMenu().show(event.getPlayer());
+            switch (ChatColor.stripColor(item.getItemMeta().getDisplayName().toUpperCase())) {
+                case "RANKED QUEUE":
+                    this.plugin.getMenuManager().getRankedInventory().open(player);
+                    break;
+
+                case "DEFAULT KIT":
+                    AbstractMatch match = profile.getMatch();
+
+                    if (match != null) {
+                        match.getLadder().getDefaultInventory().apply(player);
+                    }
+                    break;
+
+                default:
+
             }
         }
     }
