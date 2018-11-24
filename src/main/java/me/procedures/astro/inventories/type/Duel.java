@@ -3,15 +3,13 @@ package me.procedures.astro.inventories.type;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.inventories.AbstractInventory;
 import me.procedures.astro.ladder.Ladder;
-import me.procedures.astro.match.MatchOption;
+import me.procedures.astro.match.Match;
 import me.procedures.astro.match.options.Unranked;
-import me.procedures.astro.match.type.SoloMatch;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collections;
 
 public class Duel extends AbstractInventory {
 
@@ -31,16 +29,13 @@ public class Duel extends AbstractInventory {
     @Override
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getInventory().getTitle().contains("Choose ladder")) {
-            for (Ladder ladder : AstroPlugin.getInstance().getLadderManager().getLadders().values()) {
-                if (ladder.getDisplayItem().getType() == event.getCurrentItem().getType()) {
-                    System.out.println("LOODLOLD");
-                    Set<MatchOption> options = new HashSet<>();
-                    options.add(new Unranked());
-                    new SoloMatch(AstroPlugin.getInstance(), ladder, (Player) event.getWhoClicked(), (Player) event.getWhoClicked(), options);
-                    event.setCancelled(true);
-                    return;
-                }
+        for (Ladder ladder : AstroPlugin.getInstance().getLadderManager().getLadders().values()) {
+            if (ladder.getDisplayItem().getType() == event.getCurrentItem().getType()) {
+                Player player = (Player) event.getWhoClicked();
+
+                new Match(AstroPlugin.getInstance(), ladder, Collections.singletonList(player), Collections.singletonList(player), Collections.singletonList(new Unranked()));
+                event.setCancelled(true);
+                return;
             }
         }
     }

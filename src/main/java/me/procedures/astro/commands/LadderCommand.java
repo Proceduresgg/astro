@@ -5,8 +5,11 @@ import co.aikar.commands.annotation.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import me.procedures.astro.AstroPlugin;
+import me.procedures.astro.data.Mongo;
 import me.procedures.astro.kit.KitInventory;
 import me.procedures.astro.ladder.Ladder;
+import me.procedures.astro.managers.LadderManager;
+import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.InventoryUtil;
 import org.bson.Document;
 import org.bukkit.entity.Player;
@@ -15,34 +18,34 @@ import org.bukkit.entity.Player;
 @CommandPermission("procedures.manager")
 public class LadderCommand extends BaseCommand {
 
-    @Dependency
-    private AstroPlugin plugin;
+    @Dependency private LadderManager ladderManager;
+    @Dependency private Mongo mongo;
 
     @Default
     public void onDefault(Player player) {
-        player.sendMessage(AstroPlugin.SERVER_COLOR_BRIGHT + "Usage: /ladder [create, delete, setdefaultinventory, setorder, setname]");
+        player.sendMessage(CC.BRIGHT + "Usage: /ladder [create, delete, setdefaultinventory, setorder, setname]");
     }
 
     @Subcommand("create")
     public void onCreate(Player player, String name) {
-        if (this.plugin.getLadderManager().getLadders().containsKey(name.toLowerCase())) {
-            player.sendMessage(AstroPlugin.SERVER_COLOR_BRIGHT + "That ladder already exists.");
+        if (this.ladderManager.getLadders().containsKey(name.toLowerCase())) {
+            player.sendMessage(CC.BRIGHT + "That ladder already exists.");
             return;
         }
 
         Ladder ladder = new Ladder(name);
         ladder.save();
 
-        player.sendMessage(AstroPlugin.SERVER_COLOR_BRIGHT + "That ladder has been created.");
+        player.sendMessage(CC.BRIGHT + "That ladder has been created.");
 
-        this.plugin.getLadderManager().getLadders().put(name, ladder);
+        this.ladderManager.getLadders().put(name, ladder);
     }
 
     @Subcommand("delete")
     public void onDelete(Player player, Ladder ladder) {
-        this.plugin.getLadderManager().getLadders().remove(ladder.getName());
+        this.ladderManager.getLadders().remove(ladder.getName());
 
-        MongoCollection<Document> collection = this.plugin.getMongo().getPracticeDatabase().getCollection("ladders");
+        MongoCollection<Document> collection = this.mongo.getPracticeDatabase().getCollection("ladders");
         try (MongoCursor<Document> cursor = collection.find().iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
@@ -54,7 +57,7 @@ public class LadderCommand extends BaseCommand {
             }
         }
 
-        player.sendMessage(AstroPlugin.SERVER_COLOR_BRIGHT + "That ladder has been deleted.");
+        player.sendMessage(CC.BRIGHT + "That ladder has been deleted.");
     }
 
     @Subcommand("setdefaultinventory")
@@ -64,19 +67,19 @@ public class LadderCommand extends BaseCommand {
         ladder.setDefaultInventory(kitInventory);
         ladder.save();
 
-        player.sendMessage(AstroPlugin.SERVER_COLOR_BRIGHT + "The default inventory for that ladder has been updated.");
+        player.sendMessage(CC.BRIGHT + "The default inventory for that ladder has been updated.");
     }
 
     @Subcommand("setorder")
     public void onSetOrder(Player player, Ladder ladder, int order) {
         if (order > 54 || order < 0) {
-            player.sendMessage(AstroPlugin.SERVER_COLOR_BRIGHT + "You need to specify an order within 0 - 54.");
+            player.sendMessage(CC.BRIGHT + "You need to specify an order within 0 - 54.");
             return;
         }
 
         ladder.setDisplayOrder(order);
         ladder.save();
 
-        player.sendMessage(AstroPlugin.SERVER_COLOR_BRIGHT + "The display order for that ladder has been set.");
+        player.sendMessage(CC.BRIGHT + "The display order for that ladder has been set.");
     }
 }

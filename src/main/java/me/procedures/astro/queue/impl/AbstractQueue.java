@@ -53,16 +53,16 @@ public abstract class AbstractQueue {
     public void removeFromQueue(Player player) {
         PlayerProfile playerProfile = this.plugin.getProfileManager().getProfile(player);
 
-        GameUtil.resetPlayer(player);
-        player.getInventory().setContents(StateInventories.LOBBY.getContents());
         playerProfile.setState(PlayerState.LOBBY);
+        player.getInventory().setContents(StateInventories.LOBBY.getContents());
 
-        for (QueuePlayer queuePlayer : this.queue) {
-            if (player == queuePlayer.getPlayer()) {
+        GameUtil.resetPlayer(player);
+
+        this.queue.forEach(queuePlayer -> {
+            if (queuePlayer.getPlayer() == player) {
                 this.queue.remove(queuePlayer);
-                break;
             }
-        }
+        });
 
         this.playingAmount--;
     }

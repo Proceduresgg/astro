@@ -22,10 +22,8 @@ public class QueueManager {
     }
 
     private void initializeQueues() {
-        for (Ladder ladder : this.plugin.getLadderManager().getLadders().values()) {
-            UnrankedQueue unrankedQueue = new UnrankedQueue(this.plugin, ladder);
-
-            this.queues.put(ladder, unrankedQueue);
-        }
+        this.plugin.getLadderManager().getLadders().values().forEach(ladder -> {
+            this.queues.put(ladder, new UnrankedQueue(this.plugin, ladder));
+        });
     }
 }

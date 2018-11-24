@@ -64,6 +64,7 @@ public class AstroPlugin extends JavaPlugin {
 
     private void registerCommands(PaperCommandManager commandManager) {
         this.registerContexts(commandManager);
+        this.registerDependencies(commandManager);
 
         Arrays.asList(new LadderCommand(), new DuelCommand()).forEach(commandManager::registerCommand);
     }
@@ -79,5 +80,10 @@ public class AstroPlugin extends JavaPlugin {
 
             return this.ladderManager.getLadders().get(arg);
         });
+    }
+
+    private void registerDependencies(PaperCommandManager commandManager) {
+        commandManager.registerDependency(LadderManager.class, this.ladderManager);
+        commandManager.registerDependency(Mongo.class, this.mongo);
     }
 }

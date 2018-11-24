@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 public interface MatchOption {
 
-    void startPreGame(Player playerOne, Player playerTwo);
+    void startPreGame(Match match);
 
     FancyMessage getInventoryMessage(String winnerName);
 }

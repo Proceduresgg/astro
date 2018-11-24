@@ -17,7 +17,7 @@ public class Mongo {
 
     public Mongo() {
         MongoClientOptions options = MongoClientOptions.builder().connectionsPerHost(50).build();
-        MongoCredential credential = MongoCredential.createCredential("Shyon", "practice", "FEWF".toCharArray());
+        MongoCredential credential = MongoCredential.createCredential("Shyon", "practice", "fuckk".toCharArray());
 
         this.mongoClient = new MongoClient(new ServerAddress("127.0.0.1", 27017), credential, options);
         this.practiceDatabase = this.mongoClient.getDatabase("practice");

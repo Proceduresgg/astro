@@ -5,5 +5,5 @@ public enum PlayerState {
     LOBBY,
     QUEUING,
     SPECTATING,
-    FIGHTING;
+    FIGHTING,
 }

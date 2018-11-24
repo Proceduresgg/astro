@@ -22,14 +22,9 @@ public class LadderManager {
         this.loadLadders();
     }
 
-    public void saveLadders() {
-        for (Ladder ladder : this.ladders.values()) {
-            ladder.save();
-        }
-    }
-
-    public void loadLadders() {
+    private void loadLadders() {
         MongoCollection<Document> collection = this.plugin.getMongo().getPracticeDatabase().getCollection("ladders");
+
         try (MongoCursor<Document> cursor = collection.find().iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();
@@ -45,5 +40,10 @@ public class LadderManager {
                 this.ladders.put(ladder.getName(), ladder);
             }
         }
+    }
+
+
+    public void saveLadders() {
+        this.ladders.values().forEach(Ladder::save);
     }
 }

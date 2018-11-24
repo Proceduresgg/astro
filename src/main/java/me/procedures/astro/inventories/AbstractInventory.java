@@ -36,7 +36,8 @@ public abstract class AbstractInventory implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
+        if (!event.getInventory().getTitle().equals(this.title)) {
+            event.setCancelled(false);
+        }
     }
-
-
 }

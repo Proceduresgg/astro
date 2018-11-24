@@ -5,15 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.kit.KitContainer;
-import me.procedures.astro.kit.KitInventory;
 import me.procedures.astro.ladder.Ladder;
-import me.procedures.astro.match.AbstractMatch;
+import me.procedures.astro.match.Match;
+import me.procedures.astro.queue.impl.AbstractQueue;
 import me.procedures.astro.utils.ItemBuilder;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import us.rengo.milk.MilkPlugin;
 
 import java.util.*;
 
@@ -28,18 +27,17 @@ public class PlayerProfile {
 
     private PlayerState state = PlayerState.LOBBY;
 
-    private AbstractMatch match;
+    private Match match;
+    private AbstractQueue queue;
 
     public PlayerProfile(UUID identifier) {
         this.uuid = identifier;
 
-        for (Ladder ladder : AstroPlugin.getInstance().getLadderManager().getLadders().values()) {
-            this.ratings.put(ladder, 1000);
-        }
+        AstroPlugin.getInstance().getLadderManager().getLadders().values().forEach(ladder -> this.ratings.put(ladder, 1000));
     }
 
     public ItemStack[] getKits(Ladder ladder) {
-        ItemStack[] kits = {new ItemBuilder(Material.ENCHANTED_BOOK, ChatColor.GOLD + "Default Kit").getItem()};
+        ItemStack[] kits = {new ItemBuilder(Material.ENCHANTED_BOOK, ChatColor.GOLD + "Default Kit", 1).getItem()};
         KitContainer kitContainer = this.kits.get(ladder);
 
         return kits;
@@ -49,9 +47,9 @@ public class PlayerProfile {
         Document document = AstroPlugin.getInstance().getMongo().getPracticeDatabase().getCollection("profiles").find(Filters.eq("uuid", this.uuid.toString())).first();
 
         if (document != null) {
-            for (Ladder ladder : AstroPlugin.getInstance().getLadderManager().getLadders().values()) {
+            AstroPlugin.getInstance().getLadderManager().getLadders().values().forEach(ladder -> {
                 this.ratings.put(ladder, document.getInteger(ladder.getName()) != null ? document.getInteger(ladder.getName()) : 1000);
-            }
+            });
         }
     }
 }
