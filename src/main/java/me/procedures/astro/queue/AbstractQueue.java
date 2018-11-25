@@ -1,4 +1,4 @@
-package me.procedures.astro.queue.impl;
+package me.procedures.astro.queue;
 
 import lombok.Getter;
 import me.procedures.astro.AstroPlugin;
@@ -8,17 +8,18 @@ import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.GameUtil;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Getter
-public abstract class AbstractQueue {
+public abstract class AbstractQueue implements Listener {
 
     private final AstroPlugin plugin;
     private final Ladder ladder;
 
-    private List<QueuePlayer> queue = new LinkedList<>();
+    private List<QueueData> queue = new LinkedList<>();
 
     private int playingAmount;
 
@@ -27,27 +28,30 @@ public abstract class AbstractQueue {
         this.ladder = ladder;
     }
 
-    public abstract void createMatch(QueuePlayer playerOne, QueuePlayer playerTwo);
+    public abstract void createMatch(QueueData playerOne, QueueData playerTwo);
 
     public abstract void startQueueTask();
 
     public void addToQueue(Player player) {
         PlayerProfile playerProfile = this.plugin.getProfileManager().getProfile(player);
-        QueuePlayer queuePlayer = new QueuePlayer(player);
-
-        //int min = playerProfile.getRatings().get(this.ladder).getRating() - 250;
-        //int max = playerProfile.getRatings().get(this.ladder).getRating() + 250;
-
-        //queuePlayer.setMin(min);
-        //queuePlayer.setMax(max);
-
-        this.queue.add(queuePlayer);
+        QueueData queueData = new QueueData(player);
 
         GameUtil.resetPlayer(player);
+
         player.getInventory().setContents(StateInventories.QUEUE.getContents());
+
+        playerProfile.setQueue(this);
         playerProfile.setState(PlayerState.QUEUING);
 
+        this.queue.add(queueData);
+
         this.playingAmount++;
+
+        /* int min = playerProfile.getRatings().get(this.ladder).getRating() - 250;
+        int max = playerProfile.getRatings().get(this.ladder).getRating() + 250;
+
+        queueData.setMin(min);
+        queueData.setMax(max); */
     }
 
     public void removeFromQueue(Player player) {
@@ -58,9 +62,9 @@ public abstract class AbstractQueue {
 
         GameUtil.resetPlayer(player);
 
-        this.queue.forEach(queuePlayer -> {
-            if (queuePlayer.getPlayer() == player) {
-                this.queue.remove(queuePlayer);
+        this.queue.forEach(queueData -> {
+            if (queueData.getPlayer() == player) {
+                this.queue.remove(queueData);
             }
         });
 

@@ -1,9 +1,11 @@
-package me.procedures.astro.queue.impl;
+package me.procedures.astro.queue.type;
 
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.match.options.Unranked;
+import me.procedures.astro.queue.AbstractQueue;
+import me.procedures.astro.queue.QueueData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -16,7 +18,7 @@ public class UnrankedQueue extends AbstractQueue {
     }
 
     @Override
-    public void createMatch(QueuePlayer playerOne, QueuePlayer playerTwo) {
+    public void createMatch(QueueData playerOne, QueueData playerTwo) {
         new Match(AstroPlugin.getInstance(), this.getLadder(), Collections.singletonList(playerOne.getPlayer()), Collections.singletonList(playerTwo.getPlayer()), Collections.singletonList(new Unranked()));
     }
 
@@ -25,16 +27,20 @@ public class UnrankedQueue extends AbstractQueue {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Iterator<QueuePlayer> iterator = getQueue().iterator();
+                Iterator<QueueData> iterator = getQueue().iterator();
 
                 if (iterator.hasNext()) {
-                    QueuePlayer player = iterator.next();
+                    QueueData player = iterator.next();
 
-                    if (!iterator.hasNext() || iterator.next() == player) {
+                    if (!iterator.hasNext()) {
                         return;
                     }
 
-                    QueuePlayer opponent = iterator.next();
+                    QueueData opponent = iterator.next();
+
+                    if (opponent == player) {
+                        return;
+                    }
 
                     getQueue().remove(player);
                     getQueue().remove(opponent);

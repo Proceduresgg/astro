@@ -6,6 +6,7 @@ import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.utils.ItemBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,6 +28,12 @@ public class Ranked extends AbstractInventory {
         Player player = (Player) event.getWhoClicked();
 
         if (!event.getInventory().getTitle().equals(this.getTitle())) {
+            return;
+        }
+
+        ItemStack item = event.getCurrentItem();
+
+        if (item == null || item.getType() == Material.AIR || item.getItemMeta().getDisplayName() == null) {
             return;
         }
 

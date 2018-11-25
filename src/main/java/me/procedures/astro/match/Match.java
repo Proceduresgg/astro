@@ -9,6 +9,7 @@ import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.GameUtil;
+import me.procedures.astro.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -27,11 +28,13 @@ public class Match {
 
     private final AstroPlugin plugin;
 
-    private final List<MatchOption> matchOptions;
-    private final List<Player> spectators = new ArrayList<>();
-
+    /* Boolean value represents whether the player is alive.
+       TRUE if they're alive, FALSE otherwise. */
     private final Map<Player, Boolean> redTeam = new HashMap<>();
     private final Map<Player, Boolean> blueTeam = new HashMap<>();
+
+    private final List<Player> spectators = new ArrayList<>();
+    private final List<MatchOption> matchOptions;
 
     private UUID uuid;
     private Ladder ladder;
@@ -53,7 +56,7 @@ public class Match {
         });
 
         blueTeam.forEach(player -> {
-            this.redTeam.put(player, true);
+            this.blueTeam.put(player, true);
             player.teleport(Bukkit.getWorld("world").getSpawnLocation());
         });
 
@@ -126,7 +129,7 @@ public class Match {
             profile.setState(PlayerState.FIGHTING);
             profile.setMatch(this);
 
-            this.getPlugin().getPlayerUtil().hideAllPlayers(player);
+            PlayerUtil.hideAllPlayers(player);
 
             this.getAllPlayers().forEach(opponent -> {
                 if (opponent != player) {
@@ -151,7 +154,7 @@ public class Match {
     }
 
     public void playSound(Sound sound, float idk2) {
-        this.getAllPlayers().forEach(player -> player.playSound(player.getLocation(), sound, 10.0f, idk2));
+        this.getAllPlayers().forEach(player -> player.playSound(player.getLocation(), sound, 10.0F, idk2));
 
         this.getSpectators().forEach(spectator -> spectator.playSound(spectator.getLocation(), sound, 10.0F, idk2));
     }

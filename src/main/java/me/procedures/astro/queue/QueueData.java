@@ -1,4 +1,4 @@
-package me.procedures.astro.queue.impl;
+package me.procedures.astro.queue;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 @Getter
 @Setter
-public class QueuePlayer {
+public class QueueData {
 
     private Player player;
 
@@ -15,7 +15,7 @@ public class QueuePlayer {
 
     private final long insertionTime = System.currentTimeMillis();
 
-    public QueuePlayer(Player player) {
+    public QueueData(Player player) {
         this.player = player;
     }
 }

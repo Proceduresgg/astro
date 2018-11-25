@@ -2,23 +2,15 @@ package me.procedures.astro.inventories;
 
 import lombok.Getter;
 import me.procedures.astro.AstroPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 public abstract class AbstractInventory implements Listener {
 
     private final AstroPlugin plugin;
-
-    private List<ItemStack> contents = new ArrayList<>();
 
     private String title;
 
@@ -29,7 +21,7 @@ public abstract class AbstractInventory implements Listener {
         this.title = title;
         this.size = size;
 
-        AstroPlugin.getInstance().getServer().getPluginManager().registerEvents(this, AstroPlugin.getInstance());
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public abstract void open(Player player);

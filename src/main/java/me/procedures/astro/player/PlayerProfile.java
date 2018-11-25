@@ -7,7 +7,7 @@ import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.kit.KitContainer;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.match.Match;
-import me.procedures.astro.queue.impl.AbstractQueue;
+import me.procedures.astro.queue.AbstractQueue;
 import me.procedures.astro.utils.ItemBuilder;
 import org.bson.Document;
 import org.bukkit.ChatColor;

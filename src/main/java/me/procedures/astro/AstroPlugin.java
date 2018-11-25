@@ -13,8 +13,7 @@ import me.procedures.astro.managers.LadderManager;
 import me.procedures.astro.managers.MenuManager;
 import me.procedures.astro.managers.ProfileManager;
 import me.procedures.astro.managers.QueueManager;
-import me.procedures.astro.utils.PlayerUtil;
-import org.bukkit.ChatColor;
+import me.procedures.astro.utils.CC;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -24,18 +23,12 @@ public class AstroPlugin extends JavaPlugin {
 
     @Getter private static AstroPlugin instance;
 
-    public static final ChatColor SERVER_COLOR_BRIGHT = ChatColor.AQUA;
-    public static final ChatColor SERVER_COLOR_LIGHT = ChatColor.YELLOW;
-    public static final ChatColor SERVER_COLOR_DIM = ChatColor.GRAY;
-
     private Mongo mongo;
 
     private LadderManager ladderManager;
     private ProfileManager profileManager;
     private QueueManager queueManager;
     private MenuManager menuManager;
-
-    private PlayerUtil playerUtil;
 
     public void onEnable() {
         instance = this;
@@ -46,8 +39,6 @@ public class AstroPlugin extends JavaPlugin {
         this.profileManager = new ProfileManager(this);
         this.queueManager = new QueueManager(this);
         this.menuManager = new MenuManager(this);
-
-        this.playerUtil = new PlayerUtil();
 
         this.registerListeners();
         this.registerCommands(new PaperCommandManager(this));
@@ -74,7 +65,7 @@ public class AstroPlugin extends JavaPlugin {
             String arg = c.popFirstArg();
 
             if (!this.ladderManager.getLadders().containsKey(arg.toLowerCase())) {
-                c.getSender().sendMessage(SERVER_COLOR_BRIGHT + "The specified rank does not exist.");
+                c.getSender().sendMessage(CC.BRIGHT + "The specified rank does not exist.");
                 throw new InvalidCommandArgument(true);
             }
 

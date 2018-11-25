@@ -1,12 +1,10 @@
 package me.procedures.astro.match.options;
 
-import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.match.MatchOption;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.StringUtil;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 

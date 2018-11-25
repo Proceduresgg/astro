@@ -19,6 +19,7 @@ public class LadderManager {
 
     public LadderManager(AstroPlugin plugin) {
         this.plugin = plugin;
+
         this.loadLadders();
     }
 

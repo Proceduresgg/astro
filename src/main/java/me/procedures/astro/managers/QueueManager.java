@@ -3,8 +3,8 @@ package me.procedures.astro.managers;
 import lombok.Getter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.ladder.Ladder;
-import me.procedures.astro.queue.impl.AbstractQueue;
-import me.procedures.astro.queue.impl.UnrankedQueue;
+import me.procedures.astro.queue.AbstractQueue;
+import me.procedures.astro.queue.type.UnrankedQueue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +18,7 @@ public class QueueManager {
 
     public QueueManager(AstroPlugin plugin) {
         this.plugin = plugin;
+
         this.initializeQueues();
     }
 

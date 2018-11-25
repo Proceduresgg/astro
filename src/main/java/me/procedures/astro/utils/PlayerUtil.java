@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 public class PlayerUtil {
 
-    public void hideAllPlayers(Player player) {
+    public static void hideAllPlayers(Player player) {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (p != player){
                 player.hidePlayer(p);

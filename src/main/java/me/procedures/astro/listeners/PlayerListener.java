@@ -47,7 +47,7 @@ public class PlayerListener implements Listener {
 
         event.setJoinMessage(null);
 
-        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
+        this.plugin.getServer().getOnlinePlayers().forEach(onlinePlayer -> {
             onlinePlayer.hidePlayer(player);
 
             if (!player.hasPermission("gg.donor")) {
@@ -103,7 +103,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
 
-        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
@@ -113,7 +113,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        switch (ChatColor.stripColor(item.getItemMeta().getDisplayName().toUpperCase())) {
+        switch (ChatColor.stripColor(item.getItemMeta().getDisplayName().toUpperCase())) { // you should use materials for this tbh instead of display names
             case "JOIN RANKED QUEUE":
                 this.plugin.getMenuManager().getRankedInventory().open(player);
                 break;

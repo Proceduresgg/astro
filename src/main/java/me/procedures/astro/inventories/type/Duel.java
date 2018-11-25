@@ -15,10 +15,6 @@ public class Duel extends AbstractInventory {
 
     public Duel(AstroPlugin plugin, String title, int size) {
         super(plugin, title, size);
-
-        for (Ladder ladder : plugin.getLadderManager().getLadders().values()) {
-            this.getContents().add(ladder.getDisplayItem());
-        }
     }
 
     @Override
@@ -29,14 +25,15 @@ public class Duel extends AbstractInventory {
     @Override
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        for (Ladder ladder : AstroPlugin.getInstance().getLadderManager().getLadders().values()) {
-            if (ladder.getDisplayItem().getType() == event.getCurrentItem().getType()) {
-                Player player = (Player) event.getWhoClicked();
+        if (event.getInventory().getTitle().equals(this.getTitle())) {
+            this.getPlugin().getLadderManager().getLadders().values().forEach(ladder -> {
+                if (ladder.getDisplayItem().getType() == event.getCurrentItem().getType()) {
+                    Player player = (Player) event.getWhoClicked();
 
-                new Match(AstroPlugin.getInstance(), ladder, Collections.singletonList(player), Collections.singletonList(player), Collections.singletonList(new Unranked()));
-                event.setCancelled(true);
-                return;
-            }
+                    new Match(AstroPlugin.getInstance(), ladder, Collections.singletonList(player), Collections.singletonList(player), Collections.singletonList(new Unranked()));
+                    event.setCancelled(true);
+                }
+            });
         }
     }
 }

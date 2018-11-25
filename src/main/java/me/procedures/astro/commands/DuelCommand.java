@@ -3,6 +3,7 @@ package me.procedures.astro.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import me.procedures.astro.AstroPlugin;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class DuelCommand extends BaseCommand {
@@ -19,7 +20,10 @@ public class DuelCommand extends BaseCommand {
     @CommandAlias("duel")
     @CommandCompletion("@players")
     public void onDefault(Player player, Player target) {
-        if (player == target) player.sendMessage("cant duel yo self lil nigga LOOL");
+        if (player == target) {
+            player.sendMessage(ChatColor.RED + "You cannot duel yourself, little nigger.");
+            return;
+        }
 
         this.plugin.getMenuManager().getDuelInventory().open(player);
     }
