@@ -3,6 +3,10 @@ package me.procedures.astro.ladder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * These are flags each ladder has which will be configurable in-game.
+ */
+
 @AllArgsConstructor
 @Getter
 public enum LadderFlag {

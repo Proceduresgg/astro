@@ -2,8 +2,8 @@ package me.procedures.astro.managers;
 
 import lombok.Getter;
 import me.procedures.astro.AstroPlugin;
-import me.procedures.astro.inventories.type.Duel;
-import me.procedures.astro.inventories.type.Ranked;
+import me.procedures.astro.inventories.type.DuelMenu;
+import me.procedures.astro.inventories.type.RankedMenu;
 import org.bukkit.ChatColor;
 
 @Getter
@@ -11,12 +11,12 @@ public class MenuManager {
 
     private final AstroPlugin plugin;
 
-    private Ranked rankedInventory;
-    private Duel duelInventory; // i made a mini menu api
+    private RankedMenu rankedInventory;
+    private DuelMenu duelMenuInventory;
 
     public MenuManager(AstroPlugin plugin) {
         this.plugin = plugin;
-        this.rankedInventory = new Ranked(this.plugin, ChatColor.RED + "Ranked Queue", 27);
-        this.duelInventory = new Duel(this.plugin, ChatColor.RED + "Choose ladder", 27);
+        this.rankedInventory = new RankedMenu(this.plugin, ChatColor.RED + "Ranked Menu Queue", 27);
+        this.duelMenuInventory = new DuelMenu(this.plugin, ChatColor.RED + "Choose ladder", 27);
     }
 }

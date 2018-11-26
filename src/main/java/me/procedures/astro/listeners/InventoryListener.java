@@ -16,6 +16,8 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        /* If the player is in any other state except fighting,
+        don't allow them to click on any items. */
         Player player = (Player) event.getWhoClicked();
         PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
 

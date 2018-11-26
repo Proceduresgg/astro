@@ -1,7 +1,7 @@
 package me.procedures.astro.inventories.type;
 
 import me.procedures.astro.AstroPlugin;
-import me.procedures.astro.inventories.AbstractInventory;
+import me.procedures.astro.inventories.AbstractMenu;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.utils.ItemBuilder;
@@ -16,9 +16,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ranked extends AbstractInventory { // yeah i know i was just testing never renamed
+public class RankedMenu extends AbstractMenu { // yeah i know i was just testing never renamed
 
-    public Ranked(AstroPlugin plugin, String title, int size) {
+    public RankedMenu(AstroPlugin plugin, String title, int size) {
         super(plugin, title, size);
     }
 

@@ -6,6 +6,11 @@ import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * The actual kit inventory which simply holds the inventory
+ * and armor contents a kit has.
+ */
+
 @Getter
 @Setter
 @RequiredArgsConstructor

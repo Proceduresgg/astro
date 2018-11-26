@@ -20,6 +20,8 @@ public class ChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
+        // TODO: Color player names
+
         event.setFormat(MessageUtil.color(ChatColor.GREEN.toString() + ChatColor.GRAY + ": " + ChatColor.WHITE + "%2$s"));
     }
 }

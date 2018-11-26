@@ -104,7 +104,7 @@ public class Match {
 
         this.sendMessage(deathMessage);
 
-        /* Checks if all the matchPlayers on their team are dead */
+        /* Checks if all other players on their team are dead, if TRUE, end the match.*/
         if (!this.matchPlayers.values().stream()
                 .filter(matchPlayer -> matchPlayer.getTeam() == this.matchPlayers.get(player).getTeam())
                 .map(MatchPlayer::isDead)

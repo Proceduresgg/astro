@@ -1,7 +1,7 @@
 package me.procedures.astro.inventories.type;
 
 import me.procedures.astro.AstroPlugin;
-import me.procedures.astro.inventories.AbstractInventory;
+import me.procedures.astro.inventories.AbstractMenu;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.match.options.Unranked;
@@ -16,18 +16,21 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class Duel extends AbstractInventory {
+public class DuelMenu extends AbstractMenu {
 
-    public Duel(AstroPlugin plugin, String title, int size) {
+    public DuelMenu(AstroPlugin plugin, String title, int size) {
         super(plugin, title, size);
     }
 
     @Override
     @EventHandler
     public void onClick(InventoryClickEvent event) {
+        /* When the player clicks an item, check whether
+        the inventory's title matches this title, if so
+        add the player to the ladder which display item
+        matches the item clicked. */
         Player player = (Player) event.getWhoClicked();
 
         if (!event.getInventory().getTitle().equals(this.getTitle())) {
@@ -52,6 +55,7 @@ public class Duel extends AbstractInventory {
 
     @Override
     public void open(Player player) {
+        /* Create the inventory with all the ladder display items. */
         PlayerProfile profile = this.getPlugin().getProfileManager().getProfile(player);
         List<ItemStack> contents = new ArrayList<>();
 

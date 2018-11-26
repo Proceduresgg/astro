@@ -7,8 +7,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+/**
+ * Mini menu api I created which simply has listener for InventoryClickEvent,
+ * and a method for opening and creating the inventory.
+ */
+
 @Getter
-public abstract class AbstractInventory implements Listener {
+public abstract class AbstractMenu implements Listener {
 
     private final AstroPlugin plugin;
 
@@ -16,7 +21,7 @@ public abstract class AbstractInventory implements Listener {
 
     private int size;
 
-    public AbstractInventory(AstroPlugin plugin, String title, int size) {
+    public AbstractMenu(AstroPlugin plugin, String title, int size) {
         this.plugin = plugin;
         this.title = title;
         this.size = size;

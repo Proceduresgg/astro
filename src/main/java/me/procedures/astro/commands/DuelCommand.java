@@ -4,7 +4,6 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.utils.CC;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class DuelCommand extends BaseCommand {
@@ -26,6 +25,6 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        this.plugin.getMenuManager().getDuelInventory().open(player);
+        this.plugin.getMenuManager().getDuelMenuInventory().open(player);
     }
 }

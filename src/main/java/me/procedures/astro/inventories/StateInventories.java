@@ -7,13 +7,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Each enum represents a state and holds an array of ItemStack's which
+ * represent the inventory for that state.
+ */
+
 @Getter
 @AllArgsConstructor
 public enum StateInventories {
 
     LOBBY(new ItemStack[]{
             new ItemBuilder(Material.IRON_SWORD, ChatColor.GRAY + ChatColor.BOLD.toString() + "Join" + ChatColor.YELLOW + ChatColor.BOLD.toString() + " Unranked " + ChatColor.GRAY + ChatColor.BOLD.toString() + "Queue", ChatColor.GRAY + "Right click to queue unranked.").getItem(),
-            new ItemBuilder(Material.DIAMOND_SWORD, ChatColor.GRAY + ChatColor.BOLD.toString() + "Join" + ChatColor.GREEN + ChatColor.BOLD.toString() + " Ranked " + ChatColor.GRAY + ChatColor.BOLD.toString() + "Queue", ChatColor.GRAY + "Right click to queue ranked.").getItem(),
+            new ItemBuilder(Material.DIAMOND_SWORD, ChatColor.GRAY + ChatColor.BOLD.toString() + "Join" + ChatColor.GREEN + ChatColor.BOLD.toString() + " RankedMenu " + ChatColor.GRAY + ChatColor.BOLD.toString() + "Queue", ChatColor.GRAY + "Right click to queue ranked.").getItem(),
             null,
             null,
             new ItemBuilder(Material.NAME_TAG, ChatColor.RED + ChatColor.BOLD.toString() + "Create Party",  ChatColor.GRAY + "Right Click to create a party.").getItem(),

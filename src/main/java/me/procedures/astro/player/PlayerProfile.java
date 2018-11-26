@@ -37,7 +37,7 @@ public class PlayerProfile {
         AstroPlugin.getInstance().getLadderManager().getLadders().values().forEach(ladder -> this.ratings.put(ladder, 1000));
     }
 
-    public ItemStack[] getKits(Ladder ladder) {
+    public ItemStack[] getKits(Ladder ladder) { // TODO: Make it return all the player kits
         ItemStack[] kits = {new ItemBuilder(Material.ENCHANTED_BOOK, ChatColor.GOLD + "Default Kit", 1).getItem()};
         KitContainer kitContainer = this.kits.get(ladder);
 

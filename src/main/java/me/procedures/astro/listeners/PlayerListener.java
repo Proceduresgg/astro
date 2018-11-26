@@ -27,6 +27,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
+        /* Creating and loading in the player profile */
         PlayerProfile profile = this.plugin.getProfileManager().getProfile(event.getUniqueId());
     }
 
@@ -61,6 +62,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
+        /* Any damage done to a player who isn't fighting is cancelled. */
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
