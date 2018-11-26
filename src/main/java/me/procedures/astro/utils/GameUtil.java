@@ -1,5 +1,7 @@
 package me.procedures.astro.utils;
 
+import me.procedures.astro.inventories.StateInventories;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,5 +21,21 @@ public class GameUtil {
 
         //Clears all the arrows from a players body (Note: only for v1_8_3 server)
         //((CraftPlayer) player).getHandle().getDataWatcher().watch(9, (byte) 0);
+    }
+
+    public static void teleportToSpawn(Player player) {
+        Bukkit.getServer().getOnlinePlayers().forEach(onlinePlayer -> {
+            onlinePlayer.hidePlayer(player);
+
+            if (!player.hasPermission("astro.donor")) {
+                player.hidePlayer(onlinePlayer);
+            }
+        });
+
+        GameUtil.resetPlayer(player);
+
+        player.getInventory().setContents(StateInventories.LOBBY.getContents());
+        player.updateInventory();
+        player.teleport(player.getWorld().getSpawnLocation());
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class Ladder implements ILadder {
+public class Ladder implements ILadder { // o
 
     private final Map<LadderFlag, Boolean> ladderFlags = new HashMap<>();
 

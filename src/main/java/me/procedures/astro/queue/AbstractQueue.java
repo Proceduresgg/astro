@@ -36,12 +36,13 @@ public abstract class AbstractQueue implements Listener {
         PlayerProfile playerProfile = this.plugin.getProfileManager().getProfile(player);
         QueueData queueData = new QueueData(player);
 
+        playerProfile.setQueue(this);
+        playerProfile.setState(PlayerState.QUEUING);
+
         GameUtil.resetPlayer(player);
 
         player.getInventory().setContents(StateInventories.QUEUE.getContents());
-
-        playerProfile.setQueue(this);
-        playerProfile.setState(PlayerState.QUEUING);
+        player.updateInventory();
 
         this.queue.add(queueData);
 

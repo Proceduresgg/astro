@@ -50,7 +50,8 @@ public class AstroPlugin extends JavaPlugin {
     }
 
     private void registerListeners() {
-        Arrays.asList(new PlayerListener(this), new ChatListener(this)).forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
+        Arrays.asList(new PlayerListener(this), new ChatListener(this))
+                .forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void registerCommands(PaperCommandManager commandManager) {

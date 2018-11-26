@@ -2,14 +2,11 @@ package me.procedures.astro.listeners;
 
 import lombok.AllArgsConstructor;
 import me.procedures.astro.AstroPlugin;
-import me.procedures.astro.inventories.StateInventories;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,22 +35,13 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
 
-        GameUtil.resetPlayer(player);
-
-        player.getInventory().setContents(StateInventories.LOBBY.getContents());
-        player.updateInventory();
+        profile.setState(PlayerState.LOBBY);
 
         player.sendMessage(CC.BRIGHT + "Fight other players by using /duel [player].");
 
+        GameUtil.teleportToSpawn(player);
+
         event.setJoinMessage(null);
-
-        this.plugin.getServer().getOnlinePlayers().forEach(onlinePlayer -> {
-            onlinePlayer.hidePlayer(player);
-
-            if (!player.hasPermission("gg.donor")) {
-                player.hidePlayer(onlinePlayer);
-            }
-        });
     }
 
     @EventHandler
@@ -63,14 +51,11 @@ public class PlayerListener implements Listener {
 
         event.setQuitMessage(null);
 
-        switch (profile.getState()) {
-            case FIGHTING:
-                profile.getMatch().handleDeath(player, player.getLocation(), player.getDisplayName() + " has left the match.");
-                return;
+        if (profile.getState() == PlayerState.FIGHTING) {
+            profile.getMatch().handleDeath(player, player.getLocation(), player.getDisplayName() + " has left the match.");
 
-            case QUEUING:
-                profile.getQueue().removeFromQueue(player);
-                return;
+        } else if (profile.getState() == PlayerState.QUEUING) {
+            profile.getQueue().removeFromQueue(player);
         }
     }
 
@@ -109,25 +94,21 @@ public class PlayerListener implements Listener {
 
         ItemStack item = event.getItem();
 
-        if (item == null || item.getType() == Material.AIR || item.getItemMeta().getDisplayName() == null) {
-            return;
-        }
+        if (item == null || item.getType() == Material.AIR) {
+            event.setCancelled(false);
 
-        switch (ChatColor.stripColor(item.getItemMeta().getDisplayName().toUpperCase())) { // you should use materials for this tbh instead of display names
-            case "JOIN RANKED QUEUE":
-                this.plugin.getMenuManager().getRankedInventory().open(player);
-                break;
+        } else if (item.getType() == Material.DIAMOND_SWORD) {
+            this.plugin.getMenuManager().getRankedInventory().open(player);
 
-            case "DEFAULT KIT":
-                Match match = profile.getMatch();
+        } else if (item.getType() == Material.INK_SACK) {
+            GameUtil.teleportToSpawn(player);
 
-                if (match != null) {
-                    match.getLadder().getDefaultInventory().apply(player);
-                }
-                break;
+        } else if (item.getType() == Material.BOOK) {
+            Match match = profile.getMatch();
 
-            default:
-
+            if (match != null) {
+                match.getLadder().getDefaultInventory().apply(player);
+            }
         }
     }
 }

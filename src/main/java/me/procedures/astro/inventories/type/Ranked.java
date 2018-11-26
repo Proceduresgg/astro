@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ranked extends AbstractInventory {
+public class Ranked extends AbstractInventory { // yeah i know i was just testing never renamed
 
     public Ranked(AstroPlugin plugin, String title, int size) {
         super(plugin, title, size);

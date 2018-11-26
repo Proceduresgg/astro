@@ -19,7 +19,7 @@ public class UnrankedQueue extends AbstractQueue {
 
     @Override
     public void createMatch(QueueData playerOne, QueueData playerTwo) {
-        new Match(AstroPlugin.getInstance(), this.getLadder(), Collections.singletonList(playerOne.getPlayer()), Collections.singletonList(playerTwo.getPlayer()), Collections.singletonList(new Unranked()));
+        new Match(AstroPlugin.getInstance(), this.getLadder(), playerOne.getPlayer(), playerTwo.getPlayer(), new Unranked());
     }
 
     @Override

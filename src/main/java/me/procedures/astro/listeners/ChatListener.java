@@ -19,8 +19,7 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile profile = MilkPlugin.getInstance().getProfileManager().getProfile(player);
 
-        event.setFormat(MessageUtil.color((profile.getRank() == null ? ChatColor.GREEN.toString() : profile.getRank().getPrefix()) + "%1$s") + ChatColor.GRAY + ": " + ChatColor.WHITE + "%2$s");
+        event.setFormat(MessageUtil.color(ChatColor.GREEN.toString() + ChatColor.GRAY + ": " + ChatColor.WHITE + "%2$s"));
     }
 }

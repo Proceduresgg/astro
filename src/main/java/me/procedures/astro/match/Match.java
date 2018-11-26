@@ -4,8 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.arena.Arena;
-import me.procedures.astro.inventories.StateInventories;
 import me.procedures.astro.ladder.Ladder;
+import me.procedures.astro.match.team.MatchPlayer;
+import me.procedures.astro.match.team.MatchTeam;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.GameUtil;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Updated the match system so that it's more flexible with party matches.
@@ -28,10 +30,7 @@ public class Match {
 
     private final AstroPlugin plugin;
 
-    /* Boolean value represents whether the player is alive.
-       TRUE if they're alive, FALSE otherwise. */
-    private final Map<Player, Boolean> redTeam = new HashMap<>();
-    private final Map<Player, Boolean> blueTeam = new HashMap<>();
+    private final Map<Player, MatchPlayer> matchPlayers = new HashMap<>();
 
     private final List<Player> spectators = new ArrayList<>();
     private final List<MatchOption> matchOptions;
@@ -44,19 +43,19 @@ public class Match {
 
     private long startTime;
 
-    public Match(AstroPlugin plugin, Ladder ladder, List<Player> redTeam, List<Player> blueTeam, List<MatchOption> matchOptions) {
+    public Match(AstroPlugin plugin, Ladder ladder, List<Player> teamOne, List<Player> teamTwo, List<MatchOption> matchOptions) {
         this.plugin = plugin;
         this.ladder = ladder;
         this.matchOptions = matchOptions;
         this.uuid = UUID.randomUUID();
 
-        redTeam.forEach(player -> {
-            this.redTeam.put(player, true);
+        teamOne.forEach(player -> {
+            this.matchPlayers.put(player, new MatchPlayer(player, MatchTeam.RED));
             player.teleport(Bukkit.getWorld("world").getSpawnLocation()); // TODO: Make the player teleport to the arena spawn points
         });
 
-        blueTeam.forEach(player -> {
-            this.blueTeam.put(player, true);
+        teamTwo.forEach(player -> {
+            this.matchPlayers.put(player, new MatchPlayer(player, MatchTeam.BLUE));
             player.teleport(Bukkit.getWorld("world").getSpawnLocation());
         });
 
@@ -64,12 +63,16 @@ public class Match {
         this.matchOptions.forEach(matchOption -> matchOption.startPreGame(this));
     }
 
+    public Match(AstroPlugin plugin, Ladder ladder, Player playerOne, Player playerTwo, MatchOption option) {
+        this(plugin, ladder, Collections.singletonList(playerOne), Collections.singletonList(playerTwo), Collections.singletonList(option));
+    }
+
     public void startMatch() {
         this.startTime = System.currentTimeMillis();
         this.status = MatchStatus.ONGOING;
     }
 
-    public void endMatch(Map<Player, Boolean> winners, Map<Player, Boolean> losers) {
+    public void endMatch(Map<Player, Boolean> winners, Map<Player, Boolean> losers) { // TODO: Handle losers
         winners.keySet().forEach(GameUtil::resetPlayer);
 
         this.resetPlayers();
@@ -79,12 +82,8 @@ public class Match {
             public void run() {
                 winners.keySet().forEach(winner -> {
                     if (winner.isOnline()) {
-                        if (winners.get(winner)) {
-
-                            winner.getInventory().setContents(StateInventories.LOBBY.getContents());
-                            winner.updateInventory();
-
-                            winner.teleport(winner.getWorld().getSpawnLocation());
+                        if (winners.get(winner)) { /* Checking whether the player died or not */
+                            plugin.getProfileManager().getProfile(winner).setState(PlayerState.LOBBY);
                         }
                     }
                 });
@@ -95,28 +94,31 @@ public class Match {
     public void handleDeath(Player player, Location location, String deathMessage) {
         if (!deathMessage.contains("has left the match")) {
             this.playSound(Sound.AMBIENCE_THUNDER, 10.0F);
+
+            this.plugin.getProfileManager().getProfile(player).setState(PlayerState.LOBBY);
+
+            this.getMatchPlayers().keySet().forEach(alivePlayer -> alivePlayer.hidePlayer(player));
+
+            GameUtil.teleportToSpawn(player);
         }
-
-        player.getInventory().setContents(StateInventories.LOBBY.getContents());
-        player.updateInventory();
-
-        player.teleport(player.getWorld().getSpawnLocation());
 
         this.sendMessage(deathMessage);
 
-        this.getAllPlayers().forEach(alivePlayer -> alivePlayer.hidePlayer(player));
-
-        if (!this.redTeam.values().contains(true)) {
-            this.endMatch(this.blueTeam, this.redTeam);
-
-        } else if (!this.blueTeam.values().contains(true)) {
-            this.endMatch(this.redTeam, this.blueTeam);
+        /* Checks if all the matchPlayers on their team are dead */
+        if (!this.matchPlayers.values().stream()
+                .filter(matchPlayer -> matchPlayer.getTeam() == this.matchPlayers.get(player).getTeam())
+                .map(MatchPlayer::isDead)
+                .collect(Collectors.toList()).contains(false)) {
+            this.endMatch(null, null);
         }
     }
 
     public void spawnPlayers() {
-        this.getAllPlayers().forEach(player -> {
+        this.matchPlayers.keySet().forEach(player -> {
             PlayerProfile profile = this.getPlugin().getProfileManager().getProfile(player);
+
+            profile.setState(PlayerState.FIGHTING);
+            profile.setMatch(this);
 
             GameUtil.resetPlayer(player);
 
@@ -126,12 +128,9 @@ public class Match {
             player.setAllowFlight(false);
             player.setFlying(false);
 
-            profile.setState(PlayerState.FIGHTING);
-            profile.setMatch(this);
-
             PlayerUtil.hideAllPlayers(player);
 
-            this.getAllPlayers().forEach(opponent -> {
+            this.matchPlayers.keySet().forEach(opponent -> {
                 if (opponent != player) {
                     player.showPlayer(opponent);
                 }
@@ -140,7 +139,7 @@ public class Match {
     }
 
     public void resetPlayers() {
-        this.getAllPlayers().forEach(player -> {
+        this.matchPlayers.keySet().forEach(player -> {
             PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
 
             player.setMaximumNoDamageTicks(20);
@@ -154,28 +153,22 @@ public class Match {
     }
 
     public void playSound(Sound sound, float idk2) {
-        this.getAllPlayers().forEach(player -> player.playSound(player.getLocation(), sound, 10.0F, idk2));
+        this.matchPlayers.keySet().forEach(player -> player.playSound(player.getLocation(), sound, 10.0F, idk2));
 
         this.getSpectators().forEach(spectator -> spectator.playSound(spectator.getLocation(), sound, 10.0F, idk2));
     }
 
     public void sendMessage(String message) {
-        this.getAllPlayers().forEach(player -> player.sendMessage(message));
+        this.matchPlayers.keySet().forEach(player -> player.sendMessage(message));
 
         this.getSpectators().forEach(spectator -> spectator.sendMessage(message));
     }
 
-    public List<Player> getAllPlayers() {
+    public List<Player> getPlayers(MatchTeam team) {
         List<Player> players = new ArrayList<>();
 
-        this.blueTeam.keySet().forEach(player -> {
-            if (this.blueTeam.get(player)) {
-                players.add(player);
-            }
-        });
-
-        this.redTeam.keySet().forEach(player -> {
-            if (this.redTeam.get(player)) {
+        this.matchPlayers.forEach((player, matchPlayer) -> {
+            if (matchPlayer.getTeam() == team) {
                 players.add(player);
             }
         });

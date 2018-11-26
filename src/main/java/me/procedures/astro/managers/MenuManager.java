@@ -12,7 +12,7 @@ public class MenuManager {
     private final AstroPlugin plugin;
 
     private Ranked rankedInventory;
-    private Duel duelInventory;
+    private Duel duelInventory; // i made a mini menu api
 
     public MenuManager(AstroPlugin plugin) {
         this.plugin = plugin;

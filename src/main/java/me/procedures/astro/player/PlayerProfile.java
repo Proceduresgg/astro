@@ -10,6 +10,7 @@ import me.procedures.astro.match.Match;
 import me.procedures.astro.queue.AbstractQueue;
 import me.procedures.astro.utils.ItemBuilder;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +26,7 @@ public class PlayerProfile {
     private final Map<Ladder, KitContainer> kits = new HashMap<>();
     private final Map<Ladder, Integer> ratings = new HashMap<>();
 
-    private PlayerState state = PlayerState.LOBBY;
+    private PlayerState state;
 
     private Match match;
     private AbstractQueue queue;

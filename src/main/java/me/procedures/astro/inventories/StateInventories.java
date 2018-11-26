@@ -26,18 +26,11 @@ public enum StateInventories {
     SPECTATOR(new ItemStack[] {
             new ItemBuilder(Material.INK_SACK, ChatColor.RED + ChatColor.BOLD.toString() + "Stop Spectating", 1, (short) 1, ChatColor.GRAY + "Right Click to stop spectating.").getItem(),
             new ItemBuilder(Material.PAPER, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Spectator Information", ChatColor.GRAY + "Right Click to get", ChatColor.GRAY + "spectator information.").getItem(),
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
     }),
 
     QUEUE(new ItemStack[]{
-
-    }),;
+            new ItemBuilder(Material.INK_SACK, ChatColor.RED + "Leave Queue", 1, (short)1, ChatColor.GRAY + "Right-click to leave your queue.").getItem()
+    });
 
     private ItemStack[] contents;
 }
