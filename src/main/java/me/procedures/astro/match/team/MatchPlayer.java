@@ -1,5 +1,6 @@
 package me.procedures.astro.match.team;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import org.bukkit.entity.Player;
 
 @Getter @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class MatchPlayer {
 
     private Player player;
@@ -14,9 +16,4 @@ public class MatchPlayer {
     private MatchTeam team;
 
     private boolean dead = false;
-
-    public MatchPlayer(Player player, MatchTeam team) {
-        this.player = player;
-        this.team = team;
-    }
 }

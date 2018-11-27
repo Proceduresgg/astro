@@ -50,12 +50,12 @@ public class Match {
         this.uuid = UUID.randomUUID();
 
         teamOne.forEach(player -> {
-            this.matchPlayers.put(player, new MatchPlayer(player, MatchTeam.RED));
+            this.matchPlayers.put(player, new MatchPlayer(player, MatchTeam.RED, false));
             player.teleport(Bukkit.getWorld("world").getSpawnLocation()); // TODO: Make the player teleport to the arena spawn points
         });
 
         teamTwo.forEach(player -> {
-            this.matchPlayers.put(player, new MatchPlayer(player, MatchTeam.BLUE));
+            this.matchPlayers.put(player, new MatchPlayer(player, MatchTeam.BLUE, false));
             player.teleport(Bukkit.getWorld("world").getSpawnLocation());
         });
 

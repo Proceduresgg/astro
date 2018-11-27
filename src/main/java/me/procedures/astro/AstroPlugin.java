@@ -56,11 +56,6 @@ public class AstroPlugin extends JavaPlugin {
                 .forEach(listener ->  this.getServer().getPluginManager().registerEvents(listener, this));
     }
 
-    private void registerListeners(Listener... listeners) {
-        Arrays.stream(listeners)
-                .forEach(listener ->  this.getServer().getPluginManager().registerEvents(listener, this));
-    }
-
     private void registerCommands(PaperCommandManager commandManager) {
         this.registerContexts(commandManager);
         this.registerDependencies(commandManager);
