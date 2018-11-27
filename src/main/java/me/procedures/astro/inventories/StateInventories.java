@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Each enum represents a state and holds an array of ItemStack's which
+ * Each enum represents a state and holds an array of items which
  * represent the inventory for that state.
  */
 

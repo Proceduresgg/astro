@@ -7,8 +7,8 @@ import lombok.Getter;
  * These are flags each ladder has which will be configurable in-game.
  */
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum LadderFlag {
 
     ALLOW_HUNGER(true),

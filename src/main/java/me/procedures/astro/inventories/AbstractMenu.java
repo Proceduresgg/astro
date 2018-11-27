@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 /**
  * Mini menu api I created which simply has listener for InventoryClickEvent,
- * and a method for opening and creating the inventory.
+ * and a method for opening and adding all the contents to the inventory.
  */
 
 @Getter

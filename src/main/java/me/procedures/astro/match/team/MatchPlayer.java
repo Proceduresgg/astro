@@ -1,11 +1,12 @@
 package me.procedures.astro.match.team;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 
-@Getter
-@Setter
+@Getter @Setter
+@RequiredArgsConstructor
 public class MatchPlayer {
 
     private Player player;

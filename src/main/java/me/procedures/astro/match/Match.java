@@ -72,21 +72,26 @@ public class Match {
         this.status = MatchStatus.ONGOING;
     }
 
-    public void endMatch(Map<Player, Boolean> winners, Map<Player, Boolean> losers) { // TODO: Handle losers
-        winners.keySet().forEach(GameUtil::resetPlayer);
+    public void endMatch(MatchTeam winner) { // TODO: Handle losers
+        Set<Map.Entry<Player, MatchPlayer>> winners = this.getMatchPlayers().entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getTeam() == winner)
+                .collect(Collectors.toSet());
+
+        winners.forEach(entry -> GameUtil.resetPlayer(entry.getKey()));
 
         this.resetPlayers();
 
         new BukkitRunnable() {
             @Override
             public void run() {
-                winners.keySet().forEach(winner -> {
-                    if (winner.isOnline()) {
-                        if (winners.get(winner)) { /* Checking whether the player died or not */
-                            plugin.getProfileManager().getProfile(winner).setState(PlayerState.LOBBY);
-                        }
-                    }
-                });
+                getMatchPlayers().entrySet()
+                        .stream()
+                        .filter(entry -> entry.getValue().getTeam() == winner)
+                        .forEach(entry -> {
+                            plugin.getProfileManager().getProfile(entry.getKey()).setState(PlayerState.LOBBY);
+                            GameUtil.teleportToSpawn(entry.getKey());
+                        });
             }
         }.runTaskLater(this.getPlugin(), 100L);
     }
@@ -102,6 +107,8 @@ public class Match {
             GameUtil.teleportToSpawn(player);
         }
 
+        this.getMatchPlayers().get(player).setDead(true);
+
         this.sendMessage(deathMessage);
 
         /* Checks if all other players on their team are dead, if TRUE, end the match.*/
@@ -109,7 +116,7 @@ public class Match {
                 .filter(matchPlayer -> matchPlayer.getTeam() == this.matchPlayers.get(player).getTeam())
                 .map(MatchPlayer::isDead)
                 .collect(Collectors.toList()).contains(false)) {
-            this.endMatch(null, null);
+            this.endMatch(MatchTeam.getOpposite(this.matchPlayers.get(player).getTeam()));
         }
     }
 
@@ -130,11 +137,10 @@ public class Match {
 
             PlayerUtil.hideAllPlayers(player);
 
-            this.matchPlayers.keySet().forEach(opponent -> {
-                if (opponent != player) {
-                    player.showPlayer(opponent);
-                }
-            });
+            this.matchPlayers.keySet()
+                    .stream()
+                    .filter(opponent -> opponent != player)
+                    .forEach(player::showPlayer);
         });
     }
 

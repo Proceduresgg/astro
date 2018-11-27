@@ -10,6 +10,7 @@ import org.bson.Document;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,9 +30,8 @@ public class Ladder implements ILadder {
     public Ladder(String name) {
         this.name = name;
 
-        for (LadderFlag flag : LadderFlag.values()) {
-            this.ladderFlags.put(flag, flag.isDefaultFlag());
-        }
+        Arrays.stream(LadderFlag.values())
+                .forEach(ladderFlag -> this.ladderFlags.put(ladderFlag, ladderFlag.isDefaultFlag()));
     }
 
     public void save() {
@@ -47,8 +47,7 @@ public class Ladder implements ILadder {
         System.out.println("loaded " + this.name);
         this.displayOrder = 20;
 
-        for (LadderFlag flag : LadderFlag.values()) {
-            this.ladderFlags.put(flag, document.getBoolean(flag.toString()));
-        }
+        Arrays.stream(LadderFlag.values())
+                .forEach(ladderFlag -> this.ladderFlags.put(ladderFlag, document.getBoolean(ladderFlag.toString())));
     }
 }

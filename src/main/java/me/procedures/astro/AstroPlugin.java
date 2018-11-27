@@ -4,6 +4,7 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.procedures.astro.commands.DuelCommand;
+import me.procedures.astro.commands.KitCommand;
 import me.procedures.astro.commands.LadderCommand;
 import me.procedures.astro.data.Mongo;
 import me.procedures.astro.ladder.Ladder;
@@ -14,6 +15,7 @@ import me.procedures.astro.managers.MenuManager;
 import me.procedures.astro.managers.ProfileManager;
 import me.procedures.astro.managers.QueueManager;
 import me.procedures.astro.utils.CC;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -40,25 +42,26 @@ public class AstroPlugin extends JavaPlugin {
         this.queueManager = new QueueManager(this);
         this.menuManager = new MenuManager(this);
 
-        this.registerListeners();
+        this.registerListeners(new PlayerListener(this), new ChatListener(this));
         this.registerCommands(new PaperCommandManager(this));
     }
 
     public void onDisable() {
         this.ladderManager.saveLadders();
-        //this.profileManager.saveProfiles();
+      //this.profileManager.saveProfiles();
     }
 
-    private void registerListeners() {
-        Arrays.asList(new PlayerListener(this), new ChatListener(this))
-                .forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
+    private void registerListeners(Listener... listeners) {
+        Arrays.stream(listeners)
+                .forEach(listener ->  this.getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void registerCommands(PaperCommandManager commandManager) {
         this.registerContexts(commandManager);
         this.registerDependencies(commandManager);
 
-        Arrays.asList(new LadderCommand(), new DuelCommand()).forEach(commandManager::registerCommand);
+        Arrays.asList(new LadderCommand(), new DuelCommand(), new KitCommand())
+                .forEach(commandManager::registerCommand);
     }
 
     private void registerContexts(PaperCommandManager commandManager) {
@@ -76,6 +79,7 @@ public class AstroPlugin extends JavaPlugin {
 
     private void registerDependencies(PaperCommandManager commandManager) {
         commandManager.registerDependency(LadderManager.class, this.ladderManager);
+        commandManager.registerDependency(ProfileManager.class, this.profileManager);
         commandManager.registerDependency(Mongo.class, this.mongo);
     }
 }

@@ -43,14 +43,15 @@ public class DuelMenu extends AbstractMenu {
             return;
         }
 
-        this.getPlugin().getLadderManager().getLadders().values().forEach(ladder -> {
-            if (ladder.getDisplayItem().getType() == event.getCurrentItem().getType()) {
-                player.closeInventory();
-                event.setCancelled(true);
+        this.getPlugin().getLadderManager().getLadders().values()
+                .stream()
+                .filter(ladder -> ladder.getDisplayItem().getType() == event.getCurrentItem().getType())
+                .forEach(ladder -> {
+                    player.closeInventory();
+                    event.setCancelled(true);
 
-                new Match(AstroPlugin.getInstance(), ladder, player, player, new Unranked());
-            }
-        });
+                    new Match(AstroPlugin.getInstance(), ladder, player, player, new Unranked());
+                });
     }
 
     @Override

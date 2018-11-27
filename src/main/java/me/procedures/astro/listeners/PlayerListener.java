@@ -52,11 +52,16 @@ public class PlayerListener implements Listener {
 
         event.setQuitMessage(null);
 
-        if (profile.getState() == PlayerState.FIGHTING) {
-            profile.getMatch().handleDeath(player, player.getLocation(), player.getDisplayName() + " has left the match.");
+        switch (profile.getState()) {
+            case FIGHTING:
+                profile.getMatch().handleDeath(player, player.getLocation(), player.getDisplayName() + " has left the match.");
+                break;
 
-        } else if (profile.getState() == PlayerState.QUEUING) {
-            profile.getQueue().removeFromQueue(player);
+            case QUEUING:
+                profile.getQueue().removeFromQueue(player);
+                break;
+
+            default: break;
         }
     }
 
@@ -90,7 +95,10 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
 
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+        if (profile.getState() != PlayerState.LOBBY) {
+            return;
+
+        } else if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
