@@ -9,6 +9,7 @@ import me.procedures.astro.match.team.MatchPlayer;
 import me.procedures.astro.match.team.MatchTeam;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
+import me.procedures.astro.runnables.MatchStartRunnable;
 import me.procedures.astro.utils.GameUtil;
 import me.procedures.astro.utils.PlayerUtil;
 import org.bukkit.Bukkit;
@@ -61,6 +62,8 @@ public class Match {
 
         this.spawnPlayers();
         this.matchOptions.forEach(matchOption -> matchOption.startPreGame(this));
+
+        new MatchStartRunnable(this, 5).runTaskTimer(this.plugin, 20L, 0L);
     }
 
     public Match(AstroPlugin plugin, Ladder ladder, Player playerOne, Player playerTwo, MatchOption option) {
@@ -98,11 +101,13 @@ public class Match {
 
     public void handleDeath(Player player, Location location, String deathMessage) {
         if (!deathMessage.contains("has left the match")) {
-            this.playSound(Sound.AMBIENCE_THUNDER, 10.0F);
+            this.playSound(Sound.AMBIENCE_THUNDER, location, 10.0F);
 
             this.plugin.getProfileManager().getProfile(player).setState(PlayerState.LOBBY);
 
-            this.getMatchPlayers().keySet().forEach(alivePlayer -> alivePlayer.hidePlayer(player));
+            this.getMatchPlayers().keySet().stream()
+                    .filter(alivePlayer -> alivePlayer != player)
+                    .forEach(alivePlayer -> alivePlayer.hidePlayer(player));
 
             GameUtil.teleportToSpawn(player);
         }
@@ -112,10 +117,12 @@ public class Match {
         this.sendMessage(deathMessage);
 
         /* Checks if all other players on their team are dead, if TRUE, end the match.*/
-        if (!this.matchPlayers.values().stream()
+        List<Boolean> alive = this.matchPlayers.values().stream()
                 .filter(matchPlayer -> matchPlayer.getTeam() == this.matchPlayers.get(player).getTeam())
                 .map(MatchPlayer::isDead)
-                .collect(Collectors.toList()).contains(false)) {
+                .collect(Collectors.toList());
+
+        if (!alive.contains(false)) {
             this.endMatch(MatchTeam.getOpposite(this.matchPlayers.get(player).getTeam()));
         }
     }
@@ -158,10 +165,10 @@ public class Match {
 
     }
 
-    public void playSound(Sound sound, float idk2) {
-        this.matchPlayers.keySet().forEach(player -> player.playSound(player.getLocation(), sound, 10.0F, idk2));
+    public void playSound(Sound sound, Location location, float idk2) {
+        this.matchPlayers.keySet().forEach(player -> player.playSound(location, sound, 10.0F, idk2));
 
-        this.getSpectators().forEach(spectator -> spectator.playSound(spectator.getLocation(), sound, 10.0F, idk2));
+        this.getSpectators().forEach(spectator -> spectator.playSound(location, sound, 10.0F, idk2));
     }
 
     public void sendMessage(String message) {

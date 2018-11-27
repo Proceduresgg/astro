@@ -7,13 +7,17 @@ import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -119,6 +123,38 @@ public class PlayerListener implements Listener {
             if (match != null) {
                 match.getLadder().getDefaultInventory().apply(player);
             }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) event.getEntity();
+        PlayerProfile playerProfile = this.plugin.getProfileManager().getProfile(player);
+
+        Player damager = (Player) event.getDamager();
+        PlayerProfile damagerProfile = this.plugin.getProfileManager().getProfile(player);
+
+        if (playerProfile.getState() != PlayerState.FIGHTING || damagerProfile.getState() != PlayerState.FIGHTING) {
+            event.setCancelled(true);
+        }
+
+        Match match = playerProfile.getMatch();
+
+        if (!match.getMatchPlayers().containsKey(damager)) {
+            event.setCancelled(true);
+
+        } else if (match.getMatchPlayers().get(player).getTeam() == match.getMatchPlayers().get(damager).getTeam()) {
+            event.setCancelled(true);
+
+        } else if (match.getMatchPlayers().get(player).isDead()) {
+            event.setCancelled(true);
+
+        } else if (player.getHealth() - event.getFinalDamage() <= 0.0) {
+            match.handleDeath(player, player.getLocation(), CC.BRIGHT + player.getName() + CC.DIM + " has been slain by " + CC.BRIGHT + damager.getName() + CC.DIM + ".");
         }
     }
 }
