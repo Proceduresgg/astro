@@ -63,11 +63,9 @@ public abstract class AbstractQueue implements Listener {
 
         GameUtil.resetPlayer(player);
 
-        this.queue.forEach(queueData -> {
-            if (queueData.getPlayer() == player) {
-                this.queue.remove(queueData);
-            }
-        });
+        this.queue.stream()
+                .filter(queueData -> queueData.getPlayer() == player)
+                .forEach(queue::remove);
 
         this.playingAmount--;
     }

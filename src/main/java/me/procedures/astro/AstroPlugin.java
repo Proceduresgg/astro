@@ -14,6 +14,7 @@ import me.procedures.astro.managers.MenuManager;
 import me.procedures.astro.managers.ProfileManager;
 import me.procedures.astro.managers.QueueManager;
 import me.procedures.astro.utils.CC;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -52,6 +53,11 @@ public class AstroPlugin extends JavaPlugin {
     private void registerListeners() {
         Arrays.asList(new PlayerListener(this), new ChatListener(this))
                 .forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
+    }
+
+    private void registerListeners(Listener... listeners) {
+        Arrays.stream(listeners)
+                .forEach(listener ->  this.getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void registerCommands(PaperCommandManager commandManager) {

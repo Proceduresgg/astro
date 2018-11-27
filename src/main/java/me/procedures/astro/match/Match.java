@@ -80,13 +80,11 @@ public class Match {
         new BukkitRunnable() {
             @Override
             public void run() {
-                winners.keySet().forEach(winner -> {
-                    if (winner.isOnline()) {
-                        if (winners.get(winner)) { /* Checking whether the player died or not */
-                            plugin.getProfileManager().getProfile(winner).setState(PlayerState.LOBBY);
-                        }
-                    }
-                });
+                winners.keySet()
+                        .stream()
+                        .filter(Player::isOnline)
+                        .filter(winners::get)
+                        .forEach(winner -> plugin.getProfileManager().getProfile(winner).setState(PlayerState.LOBBY));
             }
         }.runTaskLater(this.getPlugin(), 100L);
     }
@@ -130,11 +128,10 @@ public class Match {
 
             PlayerUtil.hideAllPlayers(player);
 
-            this.matchPlayers.keySet().forEach(opponent -> {
-                if (opponent != player) {
-                    player.showPlayer(opponent);
-                }
-            });
+            this.matchPlayers.keySet()
+                    .stream()
+                    .filter(opponent -> opponent != player)
+                    .forEach(player::showPlayer);
         });
     }
 

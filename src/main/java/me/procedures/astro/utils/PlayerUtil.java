@@ -6,10 +6,9 @@ import org.bukkit.entity.Player;
 public class PlayerUtil {
 
     public static void hideAllPlayers(Player player) {
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (p != player){
-                player.hidePlayer(p);
-            }
-        }
+        Bukkit.getServer().getOnlinePlayers()
+                .stream()
+                .filter(p -> p != player)
+                .forEach(player::hidePlayer);
     }
 }
