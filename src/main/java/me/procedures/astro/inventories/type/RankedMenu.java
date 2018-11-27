@@ -37,14 +37,15 @@ public class RankedMenu extends AbstractMenu { // yeah i know i was just testing
             return;
         }
 
-        this.getPlugin().getLadderManager().getLadders().values().forEach(ladder -> {
-            if (ladder.getDisplayItem().getType() == event.getCurrentItem().getType()) {
-                player.closeInventory();
-                event.setCancelled(true);
+        this.getPlugin().getLadderManager().getLadders().values()
+                .stream()
+                .filter(ladder -> ladder.getDisplayItem().getType() == event.getCurrentItem().getType())
+                .forEach(ladder -> {
+                    player.closeInventory();
+                    event.setCancelled(true);
 
-                this.getPlugin().getQueueManager().getQueues().get(ladder).addToQueue(player);
-            }
-        });
+                    this.getPlugin().getQueueManager().getQueues().get(ladder).addToQueue(player);
+                });
     }
 
     @Override
