@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.kit.KitInventory;
+import me.procedures.astro.utils.InventoryUtil;
 import org.bson.Document;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -36,7 +37,8 @@ public class Ladder implements ILadder {
 
     public void save() {
         Document document = new Document("name", this.name)
-                .append("display-order", this.displayOrder);
+                .append("display-order", this.displayOrder)
+                .append("default-inv", InventoryUtil.playerInvToString(this.defaultInventory));
 
         this.ladderFlags.keySet().forEach(flag -> document.append(flag.toString(), this.ladderFlags.get(flag)));
 
@@ -44,10 +46,20 @@ public class Ladder implements ILadder {
     }
 
     public void load(Document document) {
-        System.out.println("loaded " + this.name);
-        this.displayOrder = 20;
+        try {
+            this.displayOrder = document.getInteger("display-order");
 
-        Arrays.stream(LadderFlag.values())
-                .forEach(ladderFlag -> this.ladderFlags.put(ladderFlag, document.getBoolean(ladderFlag.toString())));
+            String inventory = document.getString("default-inv");
+
+            if (inventory != null) {
+                this.defaultInventory = InventoryUtil.playerInventoryFromString(inventory);
+            }
+
+            Arrays.stream(LadderFlag.values())
+                    .forEach(ladderFlag -> this.ladderFlags.put(ladderFlag, document.getBoolean(ladderFlag.toString())));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

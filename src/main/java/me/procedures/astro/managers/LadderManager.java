@@ -33,6 +33,10 @@ public class LadderManager {
                 if (document.getString("name") == null) {
                     collection.deleteOne(document);
                     continue;
+
+                } else if (document.getString("name").contains(" ")) {
+                    collection.deleteOne(document);
+                    continue;
                 }
 
                 Ladder ladder = new Ladder(document.getString("name"));

@@ -31,7 +31,7 @@ public class Match {
 
     private final AstroPlugin plugin;
 
-    private final Map<Player, MatchPlayer> matchPlayers = new HashMap<>();
+    private final Map<Player, MatchPlayer> players = new HashMap<>();
 
     private final List<Player> spectators = new ArrayList<>();
     private final List<MatchOption> matchOptions;
@@ -51,19 +51,19 @@ public class Match {
         this.uuid = UUID.randomUUID();
 
         teamOne.forEach(player -> {
-            this.matchPlayers.put(player, new MatchPlayer(player, MatchTeam.RED, false));
+            this.players.put(player, new MatchPlayer(player, MatchTeam.RED, false));
             player.teleport(Bukkit.getWorld("world").getSpawnLocation()); // TODO: Make the player teleport to the arena spawn points
         });
 
         teamTwo.forEach(player -> {
-            this.matchPlayers.put(player, new MatchPlayer(player, MatchTeam.BLUE, false));
+            this.players.put(player, new MatchPlayer(player, MatchTeam.BLUE, false));
             player.teleport(Bukkit.getWorld("world").getSpawnLocation());
         });
 
         this.spawnPlayers();
         this.matchOptions.forEach(matchOption -> matchOption.startPreGame(this));
 
-        new MatchStartRunnable(this, 5).runTaskTimer(this.plugin, 20L, 0L);
+        new MatchStartRunnable(this, 5).runTaskTimer(this.plugin, 0L, 20L);
     }
 
     public Match(AstroPlugin plugin, Ladder ladder, Player playerOne, Player playerTwo, MatchOption option) {
@@ -76,7 +76,7 @@ public class Match {
     }
 
     public void endMatch(MatchTeam winner) { // TODO: Handle losers
-        Set<Map.Entry<Player, MatchPlayer>> winners = this.getMatchPlayers().entrySet()
+        Set<Map.Entry<Player, MatchPlayer>> winners = this.getPlayers().entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().getTeam() == winner)
                 .collect(Collectors.toSet());
@@ -88,7 +88,7 @@ public class Match {
         new BukkitRunnable() {
             @Override
             public void run() {
-                getMatchPlayers().entrySet()
+                getPlayers().entrySet()
                         .stream()
                         .filter(entry -> entry.getValue().getTeam() == winner)
                         .forEach(entry -> {
@@ -105,30 +105,30 @@ public class Match {
 
             this.plugin.getProfileManager().getProfile(player).setState(PlayerState.LOBBY);
 
-            this.getMatchPlayers().keySet().stream()
+            this.getPlayers().keySet().stream()
                     .filter(alivePlayer -> alivePlayer != player)
                     .forEach(alivePlayer -> alivePlayer.hidePlayer(player));
 
             GameUtil.teleportToSpawn(player);
         }
 
-        this.getMatchPlayers().get(player).setDead(true);
+        this.getPlayers().get(player).setDead(true);
 
         this.sendMessage(deathMessage);
 
         /* Checks if all other players on their team are dead, if TRUE, end the match.*/
-        List<Boolean> alive = this.matchPlayers.values().stream()
-                .filter(matchPlayer -> matchPlayer.getTeam() == this.matchPlayers.get(player).getTeam())
+        List<Boolean> alive = this.players.values().stream()
+                .filter(matchPlayer -> matchPlayer.getTeam() == this.players.get(player).getTeam())
                 .map(MatchPlayer::isDead)
                 .collect(Collectors.toList());
 
         if (!alive.contains(false)) {
-            this.endMatch(MatchTeam.getOpposite(this.matchPlayers.get(player).getTeam()));
+            this.endMatch(MatchTeam.getOpposite(this.players.get(player).getTeam()));
         }
     }
 
     public void spawnPlayers() {
-        this.matchPlayers.keySet().forEach(player -> {
+        this.players.keySet().forEach(player -> {
             PlayerProfile profile = this.getPlugin().getProfileManager().getProfile(player);
 
             profile.setState(PlayerState.FIGHTING);
@@ -144,7 +144,7 @@ public class Match {
 
             PlayerUtil.hideAllPlayers(player);
 
-            this.matchPlayers.keySet()
+            this.players.keySet()
                     .stream()
                     .filter(opponent -> opponent != player)
                     .forEach(player::showPlayer);
@@ -152,7 +152,7 @@ public class Match {
     }
 
     public void resetPlayers() {
-        this.matchPlayers.keySet().forEach(player -> {
+        this.players.keySet().forEach(player -> {
             PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
 
             player.setMaximumNoDamageTicks(20);
@@ -166,21 +166,21 @@ public class Match {
     }
 
     public void playSound(Sound sound, Location location, float idk2) {
-        this.matchPlayers.keySet().forEach(player -> player.playSound(location, sound, 10.0F, idk2));
+        this.players.keySet().forEach(player -> player.playSound(location, sound, 10.0F, idk2));
 
         this.getSpectators().forEach(spectator -> spectator.playSound(location, sound, 10.0F, idk2));
     }
 
     public void sendMessage(String message) {
-        this.matchPlayers.keySet().forEach(player -> player.sendMessage(message));
+        this.players.keySet().forEach(player -> player.sendMessage(message));
 
         this.getSpectators().forEach(spectator -> spectator.sendMessage(message));
     }
 
-    public List<Player> getPlayers(MatchTeam team) {
+    public List<Player> getTeam(MatchTeam team) {
         List<Player> players = new ArrayList<>();
 
-        this.matchPlayers.forEach((player, matchPlayer) -> {
+        this.players.forEach((player, matchPlayer) -> {
             if (matchPlayer.getTeam() == team) {
                 players.add(player);
             }

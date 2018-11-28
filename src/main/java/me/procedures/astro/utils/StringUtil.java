@@ -19,7 +19,9 @@ public class StringUtil {
         }
 
         StringBuilder playerNames = new StringBuilder(players.get(0).getDisplayName());
-        players.forEach(player -> playerNames.append(", ").append(player.getName()));
+        players.stream()
+                .filter(player -> player == players.get(0))
+                .forEach(player -> playerNames.append(", ").append(player.getName()));
 
         return playerNames.toString();
     }

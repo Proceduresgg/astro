@@ -9,6 +9,8 @@ import me.procedures.astro.data.Mongo;
 import me.procedures.astro.kit.KitInventory;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.managers.LadderManager;
+import me.procedures.astro.managers.QueueManager;
+import me.procedures.astro.queue.type.UnrankedQueue;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.InventoryUtil;
 import org.bson.Document;
@@ -19,6 +21,7 @@ import org.bukkit.entity.Player;
 public class LadderCommand extends BaseCommand {
 
     @Dependency private LadderManager ladderManager;
+    @Dependency private QueueManager queueManager;
     @Dependency private Mongo mongo;
 
     @Default
@@ -28,7 +31,7 @@ public class LadderCommand extends BaseCommand {
 
     @Subcommand("create")
     public void onCreate(Player player, String name) {
-        if (this.ladderManager.getLadders().containsKey(name.toLowerCase())) {
+        if (this.ladderManager.getLadders().containsKey(name)) {
             player.sendMessage(CC.BRIGHT + "That ladder already exists.");
             return;
         }
@@ -39,13 +42,16 @@ public class LadderCommand extends BaseCommand {
         player.sendMessage(CC.BRIGHT + "That ladder has been created.");
 
         this.ladderManager.getLadders().put(name, ladder);
+        this.queueManager.getQueues().put(ladder, new UnrankedQueue(this.queueManager.getPlugin(), ladder));
     }
 
     @Subcommand("delete")
     public void onDelete(Player player, Ladder ladder) {
         this.ladderManager.getLadders().remove(ladder.getName());
+        this.queueManager.getQueues().remove(ladder);
 
         MongoCollection<Document> collection = this.mongo.getPracticeDatabase().getCollection("ladders");
+
         try (MongoCursor<Document> cursor = collection.find().iterator()) {
             while (cursor.hasNext()) {
                 Document document = cursor.next();

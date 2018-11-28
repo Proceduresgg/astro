@@ -11,8 +11,8 @@ public class Unranked implements MatchOption {
 
     @Override
     public void startPreGame(Match match) {
-        match.getMatchPlayers().forEach((player, matchPlayer) -> {
-            player.sendMessage(CC.LIGHT + "Your Opponent: " + CC.BRIGHT + StringUtil.getPlayerNames(match.getPlayers(MatchTeam.getOpposite(matchPlayer.getTeam()))));
+        match.getPlayers().forEach((player, matchPlayer) -> {
+            player.sendMessage(CC.LIGHT + "Your Opponent: " + CC.BRIGHT + StringUtil.getPlayerNames(match.getTeam(MatchTeam.getOpposite(matchPlayer.getTeam()))));
         });
     }
 

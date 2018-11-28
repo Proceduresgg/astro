@@ -38,7 +38,7 @@ public class PlayerProfile {
     }
 
     public ItemStack[] getKits(Ladder ladder) { // TODO: Make it return all the player kits
-        ItemStack[] kits = {new ItemBuilder(Material.ENCHANTED_BOOK, ChatColor.GOLD + "Default Kit", 1).getItem()};
+        ItemStack[] kits = {new ItemBuilder(Material.BOOK, ChatColor.GOLD + "Default Kit", 1).getItem()};
         KitContainer kitContainer = this.kits.get(ladder);
 
         return kits;

@@ -3,6 +3,7 @@ package me.procedures.astro.kit;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import me.procedures.astro.utils.GameUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -11,16 +12,18 @@ import org.bukkit.inventory.ItemStack;
  * and armor contents a kit has.
  */
 
-@Getter
-@Setter
+@Getter @Setter
 @RequiredArgsConstructor
 public class KitInventory {
 
-    private ItemStack[] contents;
-    private ItemStack[] armor;
+    private ItemStack[] contents = {};
+    private ItemStack[] armor = {};
 
     public void apply(Player player) {
+        GameUtil.resetPlayer(player);
+
         player.getInventory().setContents(this.contents);
         player.getInventory().setArmorContents(this.armor);
+        player.updateInventory();
     }
 }

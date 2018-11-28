@@ -7,9 +7,7 @@ import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,11 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
 @AllArgsConstructor
@@ -99,30 +93,37 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
 
-        if (profile.getState() != PlayerState.LOBBY) {
-            return;
-
-        } else if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
         ItemStack item = event.getItem();
 
         if (item == null || item.getType() == Material.AIR) {
-            event.setCancelled(false);
+            return;
+        }
 
-        } else if (item.getType() == Material.DIAMOND_SWORD) {
-            this.plugin.getMenuManager().getRankedInventory().open(player);
+        switch (profile.getState()) {
+            case LOBBY:
+                if (item.getType() == Material.DIAMOND_SWORD) {
+                    this.plugin.getMenuManager().getRankedInventory().open(player);
 
-        } else if (item.getType() == Material.INK_SACK) {
-            GameUtil.teleportToSpawn(player);
+                } else if (item.getType() == Material.INK_SACK) {
+                    GameUtil.teleportToSpawn(player);
+                }
+                break;
 
-        } else if (item.getType() == Material.BOOK) {
-            Match match = profile.getMatch();
+            case FIGHTING:
+                if (item.getType() == Material.BOOK) {
+                    Match match = profile.getMatch();
 
-            if (match != null) {
-                match.getLadder().getDefaultInventory().apply(player);
-            }
+                    if (match != null) {
+                        match.getLadder().getDefaultInventory().apply(player);
+                    }
+                }
+                break;
+
+            default: break;
         }
     }
 
@@ -144,17 +145,37 @@ public class PlayerListener implements Listener {
 
         Match match = playerProfile.getMatch();
 
-        if (!match.getMatchPlayers().containsKey(damager)) {
+        if (!match.getPlayers().containsKey(damager)) {
             event.setCancelled(true);
 
-        } else if (match.getMatchPlayers().get(player).getTeam() == match.getMatchPlayers().get(damager).getTeam()) {
+        } else if (match.getPlayers().get(player).getTeam() == match.getPlayers().get(damager).getTeam()) {
             event.setCancelled(true);
 
-        } else if (match.getMatchPlayers().get(player).isDead()) {
+        } else if (match.getPlayers().get(player).isDead()) {
             event.setCancelled(true);
 
         } else if (player.getHealth() - event.getFinalDamage() <= 0.0) {
             match.handleDeath(player, player.getLocation(), CC.BRIGHT + player.getName() + CC.DIM + " has been slain by " + CC.BRIGHT + damager.getName() + CC.DIM + ".");
+        }
+    }
+
+    @EventHandler
+    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
+
+        if (profile.getState() != PlayerState.FIGHTING) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
+
+        if (profile.getState() != PlayerState.FIGHTING && profile.getState() != PlayerState.KIT_EDITOR) {
+             event.setCancelled(true);
         }
     }
 }

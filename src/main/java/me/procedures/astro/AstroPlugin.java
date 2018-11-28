@@ -3,6 +3,7 @@ package me.procedures.astro;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
+import me.procedures.astro.commands.BlockListener;
 import me.procedures.astro.commands.DuelCommand;
 import me.procedures.astro.commands.KitCommand;
 import me.procedures.astro.commands.LadderCommand;
@@ -42,7 +43,7 @@ public class AstroPlugin extends JavaPlugin {
         this.queueManager = new QueueManager(this);
         this.menuManager = new MenuManager(this);
 
-        this.registerListeners(new PlayerListener(this), new ChatListener(this));
+        this.registerListeners(new PlayerListener(this), new ChatListener(this), new BlockListener(this));
         this.registerCommands(new PaperCommandManager(this));
     }
 
@@ -68,8 +69,8 @@ public class AstroPlugin extends JavaPlugin {
         commandManager.getCommandContexts().registerContext(Ladder.class, c -> {
             String arg = c.popFirstArg();
 
-            if (!this.ladderManager.getLadders().containsKey(arg.toLowerCase())) {
-                c.getSender().sendMessage(CC.BRIGHT + "The specified rank does not exist.");
+            if (!this.ladderManager.getLadders().containsKey(arg)) {
+                c.getSender().sendMessage(CC.BRIGHT + "The specified ladder does not exist.");
                 throw new InvalidCommandArgument(true);
             }
 
@@ -81,5 +82,6 @@ public class AstroPlugin extends JavaPlugin {
         commandManager.registerDependency(LadderManager.class, this.ladderManager);
         commandManager.registerDependency(ProfileManager.class, this.profileManager);
         commandManager.registerDependency(Mongo.class, this.mongo);
+        commandManager.registerDependency(QueueManager.class, this.queueManager);
     }
 }
