@@ -25,8 +25,7 @@ import java.util.stream.Collectors;
  * Updated the match system so that it's more flexible with party matches.
  */
 
-@Getter
-@Setter
+@Getter @Setter
 public class Match {
 
     private final AstroPlugin plugin;
@@ -84,6 +83,8 @@ public class Match {
         winners.forEach(entry -> GameUtil.resetPlayer(entry.getKey()));
 
         this.resetPlayers();
+
+        this.plugin.getQueueManager().getQueues().get(this.ladder).handleMatch(this);
 
         new BukkitRunnable() {
             @Override

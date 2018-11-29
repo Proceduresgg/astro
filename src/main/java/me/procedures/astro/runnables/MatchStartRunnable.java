@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.utils.CC;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Set;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -23,17 +20,17 @@ public class MatchStartRunnable extends BukkitRunnable {
         switch (this.count) {
             case 0:
                 this.match.startMatch();
-                this.match.sendMessage(CC.LIGHT + "The match has started.");
+                this.match.sendMessage(CC.PRIMARY + "The match has started.");
 
                 this.cancel();
                 return;
 
             case 1:
-                this.match.sendMessage(CC.LIGHT + "The match is starting in " + CC.BRIGHT + this.count + "second.");
+                this.match.sendMessage(CC.SECONDARY + "The match is starting in " + CC.PRIMARY + this.count + CC.SECONDARY + " second.");
                 break;
 
             default:
-                this.match.sendMessage(CC.LIGHT + "The match is starting in " + CC.BRIGHT + this.count + "seconds.");
+                this.match.sendMessage(CC.SECONDARY + "The match is starting in " + CC.PRIMARY + this.count + CC.SECONDARY + " seconds.");
                 break;
         }
 

@@ -4,6 +4,7 @@ import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.inventories.AbstractMenu;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.player.PlayerProfile;
+import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,9 +17,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankedMenu extends AbstractMenu { // yeah i know i was just testing never renamed
+public class UnrankedMenu extends AbstractMenu { // yeah i know i was just testing never renamed
 
-    public RankedMenu(AstroPlugin plugin, String title, int size) {
+    public UnrankedMenu(AstroPlugin plugin, String title, int size) {
         super(plugin, title, size);
     }
 
@@ -56,9 +57,9 @@ public class RankedMenu extends AbstractMenu { // yeah i know i was just testing
         this.getPlugin().getQueueManager().getQueues().values().forEach(queue -> {
             Ladder ladder = queue.getLadder();
 
-            contents.add(new ItemBuilder(ladder.getDisplayItem().getType(), ladder.getName(), 1,
-                    "In Queue: " + queue.getQueue().size(),
-                    "In Fight: " + queue.getPlayingAmount()).getItem());
+            contents.add(new ItemBuilder(ladder.getDisplayItem().getType(), CC.PRIMARY + ladder.getName(), 1,
+                    CC.RESET + "In Queue: " + CC.PRIMARY + queue.getQueue().size(),
+                    CC.RESET + "In Fight: " + CC.PRIMARY + queue.getPlayingAmount()).getItem());
         });
 
         Inventory inventory = Bukkit.createInventory(null, this.getSize(), this.getTitle());

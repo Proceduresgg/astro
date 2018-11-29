@@ -4,7 +4,6 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.data.Mongo;
 import me.procedures.astro.kit.KitInventory;
 import me.procedures.astro.ladder.Ladder;
@@ -26,20 +25,20 @@ public class LadderCommand extends BaseCommand {
 
     @Default
     public void onDefault(Player player) {
-        player.sendMessage(CC.BRIGHT + "Usage: /ladder [create, delete, setdefaultinventory, setorder, setname]");
+        player.sendMessage(CC.PRIMARY + "Usage: /ladder [create, delete, setdefaultinventory, setorder, setname]");
     }
 
     @Subcommand("create")
     public void onCreate(Player player, String name) {
         if (this.ladderManager.getLadders().containsKey(name)) {
-            player.sendMessage(CC.BRIGHT + "That ladder already exists.");
+            player.sendMessage(CC.PRIMARY + "That ladder already exists.");
             return;
         }
 
         Ladder ladder = new Ladder(name);
         ladder.save();
 
-        player.sendMessage(CC.BRIGHT + "That ladder has been created.");
+        player.sendMessage(CC.PRIMARY + "That ladder has been created.");
 
         this.ladderManager.getLadders().put(name, ladder);
         this.queueManager.getQueues().put(ladder, new UnrankedQueue(this.queueManager.getPlugin(), ladder));
@@ -63,7 +62,7 @@ public class LadderCommand extends BaseCommand {
             }
         }
 
-        player.sendMessage(CC.BRIGHT + "That ladder has been deleted.");
+        player.sendMessage(CC.PRIMARY + "That ladder has been deleted.");
     }
 
     @Subcommand("setdefaultinventory")
@@ -73,19 +72,19 @@ public class LadderCommand extends BaseCommand {
         ladder.setDefaultInventory(kitInventory);
         ladder.save();
 
-        player.sendMessage(CC.BRIGHT + "The default inventory for that ladder has been updated.");
+        player.sendMessage(CC.PRIMARY + "The default inventory for that ladder has been updated.");
     }
 
     @Subcommand("setorder")
     public void onSetOrder(Player player, Ladder ladder, int order) {
         if (order > 54 || order < 0) {
-            player.sendMessage(CC.BRIGHT + "You need to specify an order within 0 - 54.");
+            player.sendMessage(CC.PRIMARY + "You need to specify an order within 0 - 54.");
             return;
         }
 
         ladder.setDisplayOrder(order);
         ladder.save();
 
-        player.sendMessage(CC.BRIGHT + "The display order for that ladder has been set.");
+        player.sendMessage(CC.PRIMARY + "The display order for that ladder has been set.");
     }
 }

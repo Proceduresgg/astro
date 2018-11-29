@@ -22,6 +22,6 @@ public class ChatListener implements Listener {
 
         // TODO: Color player names
 
-        event.setFormat(MessageUtil.color(ChatColor.GREEN.toString() + ChatColor.GRAY + ": " + ChatColor.WHITE + "%2$s"));
+        event.setFormat(MessageUtil.color(ChatColor.GREEN.toString() + "%1$s" + ChatColor.GRAY + ": " + ChatColor.WHITE + "%2$s"));
     }
 }

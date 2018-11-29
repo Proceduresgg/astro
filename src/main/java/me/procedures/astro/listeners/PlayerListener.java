@@ -7,6 +7,7 @@ import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
+import me.procedures.astro.utils.PlayerUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,9 +38,10 @@ public class PlayerListener implements Listener {
 
         profile.setState(PlayerState.LOBBY);
 
-        player.sendMessage(CC.BRIGHT + "Fight other players by using /duel [player].");
-
+        PlayerUtil.clearChat(player);
         GameUtil.teleportToSpawn(player);
+
+        player.sendMessage(CC.SECONDARY + "Fight other players by using /duel [player].");
 
         event.setJoinMessage(null);
     }
@@ -50,12 +53,16 @@ public class PlayerListener implements Listener {
 
         event.setQuitMessage(null);
 
+        System.out.println("LOL");
+
         switch (profile.getState()) {
             case FIGHTING:
                 profile.getMatch().handleDeath(player, player.getLocation(), player.getDisplayName() + " has left the match.");
                 break;
 
             case QUEUING:
+                System.out.println("FF");
+
                 profile.getQueue().removeFromQueue(player);
                 break;
 
@@ -105,8 +112,8 @@ public class PlayerListener implements Listener {
 
         switch (profile.getState()) {
             case LOBBY:
-                if (item.getType() == Material.DIAMOND_SWORD) {
-                    this.plugin.getMenuManager().getRankedInventory().open(player);
+                if (item.getType() == Material.IRON_SWORD) {
+                    this.plugin.getMenuManager().getUnrankedInventory().open(player);
 
                 } else if (item.getType() == Material.INK_SACK) {
                     GameUtil.teleportToSpawn(player);
@@ -155,7 +162,7 @@ public class PlayerListener implements Listener {
             event.setCancelled(true);
 
         } else if (player.getHealth() - event.getFinalDamage() <= 0.0) {
-            match.handleDeath(player, player.getLocation(), CC.BRIGHT + player.getName() + CC.DIM + " has been slain by " + CC.BRIGHT + damager.getName() + CC.DIM + ".");
+            match.handleDeath(player, player.getLocation(), CC.PRIMARY + player.getName() + CC.TERTIARY + " has been slain by " + CC.PRIMARY + damager.getName() + CC.TERTIARY + ".");
         }
     }
 
@@ -177,5 +184,14 @@ public class PlayerListener implements Listener {
         if (profile.getState() != PlayerState.FIGHTING && profile.getState() != PlayerState.KIT_EDITOR) {
              event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        PlayerProfile profile = this.plugin.getProfileManager().getProfile(player);
+
+        profile.getMatch().handleDeath(player, player.getLocation(), CC.PRIMARY + player.getName() + CC.TERTIARY + " has died.");
+
     }
 }

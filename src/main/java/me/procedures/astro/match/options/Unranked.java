@@ -12,12 +12,12 @@ public class Unranked implements MatchOption {
     @Override
     public void startPreGame(Match match) {
         match.getPlayers().forEach((player, matchPlayer) -> {
-            player.sendMessage(CC.LIGHT + "Your Opponent: " + CC.BRIGHT + StringUtil.getPlayerNames(match.getTeam(MatchTeam.getOpposite(matchPlayer.getTeam()))));
+            player.sendMessage(CC.SECONDARY + "Your Opponent: " + CC.PRIMARY + StringUtil.getPlayerNames(match.getTeam(MatchTeam.getOpposite(matchPlayer.getTeam()))));
         });
     }
 
     @Override
     public FancyMessage getInventoryMessage(String winnerName) {
-        return new FancyMessage("Winner: " + winnerName).color(CC.LIGHT); // TODO: Create inventory / match cache
+        return new FancyMessage("Winner: " + winnerName).color(CC.SECONDARY); // TODO: Create inventory / match cache
     }
 }

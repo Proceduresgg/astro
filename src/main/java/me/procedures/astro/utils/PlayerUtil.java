@@ -11,4 +11,10 @@ public class PlayerUtil {
                 .filter(p -> p != player)
                 .forEach(player::hidePlayer);
     }
+
+    public static void clearChat(Player player) {
+        for (int x = 0; x < 100; x++) {
+            player.sendMessage("");
+        }
+    }
 }

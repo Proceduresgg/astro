@@ -3,6 +3,7 @@ package me.procedures.astro;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
+import me.joeleoli.frame.Frame;
 import me.procedures.astro.commands.BlockListener;
 import me.procedures.astro.commands.DuelCommand;
 import me.procedures.astro.commands.KitCommand;
@@ -15,6 +16,7 @@ import me.procedures.astro.managers.LadderManager;
 import me.procedures.astro.managers.MenuManager;
 import me.procedures.astro.managers.ProfileManager;
 import me.procedures.astro.managers.QueueManager;
+import me.procedures.astro.scoreboard.AdapterResolver;
 import me.procedures.astro.utils.CC;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,6 +47,8 @@ public class AstroPlugin extends JavaPlugin {
 
         this.registerListeners(new PlayerListener(this), new ChatListener(this), new BlockListener(this));
         this.registerCommands(new PaperCommandManager(this));
+
+        new Frame(this, new AdapterResolver());
     }
 
     public void onDisable() {
@@ -70,7 +74,7 @@ public class AstroPlugin extends JavaPlugin {
             String arg = c.popFirstArg();
 
             if (!this.ladderManager.getLadders().containsKey(arg)) {
-                c.getSender().sendMessage(CC.BRIGHT + "The specified ladder does not exist.");
+                c.getSender().sendMessage(CC.PRIMARY + "The specified ladder does not exist.");
                 throw new InvalidCommandArgument(true);
             }
 
@@ -81,7 +85,7 @@ public class AstroPlugin extends JavaPlugin {
     private void registerDependencies(PaperCommandManager commandManager) {
         commandManager.registerDependency(LadderManager.class, this.ladderManager);
         commandManager.registerDependency(ProfileManager.class, this.profileManager);
-        commandManager.registerDependency(Mongo.class, this.mongo);
         commandManager.registerDependency(QueueManager.class, this.queueManager);
+        commandManager.registerDependency(Mongo.class, this.mongo);
     }
 }

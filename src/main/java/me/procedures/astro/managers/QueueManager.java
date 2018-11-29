@@ -27,4 +27,18 @@ public class QueueManager {
             this.queues.put(ladder, new UnrankedQueue(this.plugin, ladder));
         });
     }
+
+    public int getTotalInFight() {
+        return this.queues.values()
+                .stream()
+                .mapToInt(AbstractQueue::getPlayingAmount)
+                .sum();
+    }
+
+    public int getTotalInQueue() {
+        return this.queues.values()
+                .stream()
+                .mapToInt(queue -> queue.getQueue().size())
+                .sum();
+    }
 }

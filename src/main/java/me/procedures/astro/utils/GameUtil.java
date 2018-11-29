@@ -2,10 +2,13 @@ package me.procedures.astro.utils;
 
 import me.procedures.astro.inventories.StateInventories;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class GameUtil {
+
+    public static String SCOREBOARD_TITLE = CC.PRIMARY + ChatColor.BOLD.toString() + "Astro" + ChatColor.GRAY + " \u2758 " + ChatColor.RESET + "Practice";
 
     public static void resetPlayer(Player player) {
         player.setCanPickupItems(false);

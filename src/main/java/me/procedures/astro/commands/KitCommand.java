@@ -33,7 +33,7 @@ public class KitCommand extends BaseCommand {
                 new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 999999, 99)
         ));
 
-        player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD, ChatColor.GRAY + ChatColor.BOLD.toString() + "Join" + ChatColor.GREEN + ChatColor.BOLD.toString() + " RankedMenu " + ChatColor.GRAY + ChatColor.BOLD.toString() + "Queue", ChatColor.GRAY + "Right click to queue ranked.").getItem());
+        player.getInventory().addItem(new ItemBuilder(Material.DIAMOND_SWORD, ChatColor.GRAY + ChatColor.BOLD.toString() + "Join" + ChatColor.GREEN + ChatColor.BOLD.toString() + " UnrankedMenu " + ChatColor.GRAY + ChatColor.BOLD.toString() + "Queue", ChatColor.GRAY + "Right click to queue ranked.").getItem());
 
         Bukkit.getServer().getOnlinePlayers().forEach(onlinePlayer -> {
             onlinePlayer.showPlayer(player);

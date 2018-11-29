@@ -21,7 +21,7 @@ public class DuelCommand extends BaseCommand {
     @CommandCompletion("@players")
     public void onDefault(Player player, Player target) {
         if (player == target) {
-            player.sendMessage(CC.BRIGHT + "You cannot duel yourself.");
+            player.sendMessage(CC.PRIMARY + "You cannot duel yourself.");
             return;
         }
 

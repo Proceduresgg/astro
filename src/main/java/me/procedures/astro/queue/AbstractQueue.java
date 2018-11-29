@@ -1,19 +1,24 @@
 package me.procedures.astro.queue;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.inventories.StateInventories;
 import me.procedures.astro.ladder.Ladder;
+import me.procedures.astro.match.Match;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
+import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-@Getter
+@Getter @Setter
 public abstract class AbstractQueue implements Listener {
 
     private final AstroPlugin plugin;
@@ -46,7 +51,7 @@ public abstract class AbstractQueue implements Listener {
 
         this.queue.add(queueData);
 
-        this.playingAmount++;
+        player.sendMessage(CC.SECONDARY + "You have been added to the queue.");
 
         /* int min = playerProfile.getRatings().get(this.ladder).getRating() - 250;
         int max = playerProfile.getRatings().get(this.ladder).getRating() + 250;
@@ -56,17 +61,31 @@ public abstract class AbstractQueue implements Listener {
     }
 
     public void removeFromQueue(Player player) {
-        PlayerProfile playerProfile = this.plugin.getProfileManager().getProfile(player);
+        if (player.isOnline()) {
+            PlayerProfile playerProfile = this.plugin.getProfileManager().getProfile(player);
 
-        playerProfile.setState(PlayerState.LOBBY);
-        player.getInventory().setContents(StateInventories.LOBBY.getContents());
+            playerProfile.setState(PlayerState.LOBBY);
+            player.getInventory().setContents(StateInventories.LOBBY.getContents());
 
-        GameUtil.resetPlayer(player);
+            GameUtil.resetPlayer(player);
 
-        this.queue.stream()
-                .filter(queueData -> queueData.getPlayer() == player)
-                .forEach(this.queue::remove);
+            player.sendMessage(CC.SECONDARY + "You have been removed to the queue.");
+        }
 
-        this.playingAmount--;
+        this.queue.remove(this.getQueueData(player));
+    }
+
+    public void handleMatch(Match match) {
+        this.playingAmount -= match.getPlayers().size();
+    }
+
+    public QueueData getQueueData(Player player) {
+        for (QueueData data : this.queue) {
+            if (data.getPlayer() == player) {
+                return data;
+            }
+        }
+
+        return null;
     }
 }
