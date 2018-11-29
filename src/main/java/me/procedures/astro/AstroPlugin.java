@@ -8,6 +8,7 @@ import me.procedures.astro.commands.BlockListener;
 import me.procedures.astro.commands.DuelCommand;
 import me.procedures.astro.commands.KitCommand;
 import me.procedures.astro.commands.LadderCommand;
+import me.procedures.astro.config.PracticeConfiguration;
 import me.procedures.astro.data.Mongo;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.listeners.ChatListener;
@@ -28,6 +29,7 @@ public class AstroPlugin extends JavaPlugin {
 
     @Getter private static AstroPlugin instance;
 
+    private PracticeConfiguration configuration;
     private Mongo mongo;
 
     private LadderManager ladderManager;
@@ -38,6 +40,7 @@ public class AstroPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        this.configuration = new PracticeConfiguration();
         this.mongo = new Mongo();
 
         this.ladderManager = new LadderManager(this);

@@ -7,6 +7,7 @@ import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
+import me.procedures.astro.utils.MessageUtil;
 import me.procedures.astro.utils.PlayerUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -41,7 +42,7 @@ public class PlayerListener implements Listener {
         PlayerUtil.clearChat(player);
         GameUtil.teleportToSpawn(player);
 
-        player.sendMessage(CC.SECONDARY + "Fight other players by using /duel [player].");
+        this.plugin.getConfiguration().getMessages().getConfig().getStringList("join-messages").forEach(message -> player.sendMessage(MessageUtil.color(message)));
 
         event.setJoinMessage(null);
     }

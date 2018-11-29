@@ -3,10 +3,12 @@ package me.procedures.astro.scoreboard;
 import me.joeleoli.frame.FrameAdapter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.match.Match;
+import me.procedures.astro.match.MatchStatus;
 import me.procedures.astro.match.team.MatchTeam;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -25,15 +27,13 @@ public class MatchAdapter implements FrameAdapter {
         PlayerProfile profile = AstroPlugin.getInstance().getProfileManager().getProfile(player);
         Match match = profile.getMatch();
 
-        List<String> toReturn = new ArrayList<>();
+        List<String> lines = AstroPlugin.getInstance().getConfiguration().getScoreboard().getConfig().getStringList("boards.lobby");
 
-        switch (match.getStatus()) {
-            case STARTING:
-                toReturn.add(ChatColor.RESET + player.getName());
-                toReturn.add(CC.PRIMARY + "vs");
-                toReturn.add(ChatColor.RESET + match.getTeam(MatchTeam.getOpposite(match.getPlayers().get(player).getTeam())).get(0).getName());
+        if (match.getStatus() == MatchStatus.STARTING) {
+            lines.forEach(line -> line.replace("{opponent-1}", player.getName())
+                    .replace("{opponent-2}", match.getTeam(MatchTeam.getOpposite(match.getPlayers().get(player).getTeam())).get(0).getName()));
         }
 
-        return toReturn;
+        return lines;
     }
 }

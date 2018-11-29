@@ -1,0 +1,22 @@
+# You can edit the plugin's scoreboard in here
+#
+# KEY:
+# Online Players - "{total-player-count}"
+# Total In Queue - "{total-queue-count}"
+# Total In Fights - "{total-match-count}"
+# Opponent - {opponent-(1 / 2)}"
+
+# This is the name which will be displayed on the scoreboard
+server-name: "Astro"
+
+boards:
+  # Each state has a different board
+  lobby:
+    - "Online: {total-player-count}"
+    - "In Queue: {total-queue-count}"
+    - "In Fights: {total-match-count}"
+
+  match:
+    - "{opponent-1}"
+    - "vs"
+    - "{opponent-2}"

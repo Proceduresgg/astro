@@ -4,6 +4,7 @@ import me.joeleoli.frame.FrameAdapter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
+import me.procedures.astro.utils.CC;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -26,9 +27,11 @@ public class AdapterResolver implements FrameAdapter {
 
     @Override
     public String getTitle(Player player) {
-        PlayerProfile profile = AstroPlugin.getInstance().getProfileManager().getProfile(player);
 
-        return this.adapters.get(profile.getState()).getTitle(player);
+        return CC.PRIMARY + ChatColor.BOLD.toString()
+                + AstroPlugin.getInstance().getConfiguration().getScoreboard().getConfig().getString("server-name")
+                + ChatColor.GRAY + " \u2758 "
+                + ChatColor.RESET + "Practice";
     }
 
     @Override
@@ -42,7 +45,7 @@ public class AdapterResolver implements FrameAdapter {
             toReturn.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "---------------------");
             toReturn.addAll(lines);
             toReturn.add("");
-            toReturn.add(ChatColor.DARK_RED.toString() + "astro.gg");
+            toReturn.add(CC.PRIMARY.toString() + "astro.gg");
             toReturn.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "---------------------");
         }
 

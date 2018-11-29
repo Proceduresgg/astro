@@ -1,0 +1,18 @@
+# Customize about every message in the practice plugin.
+# Make sure to also color your messages.
+# Example: "&4Welcome to Astro Practice!"
+
+join-messages:
+  - "&4Duel other players with /duel [Player]"
+
+match:
+  # Seconds is represented with an '$'
+  countdown: "&4The match starts in $ second(s)."
+  start: "The match has started!"
+
+queue:
+  # The name of the ladder is represented with "{ladder-name}"
+  added: "You have been added to the {ladder-name} queue!"
+  removed: "You have been removed from the {ladder-name} queue!"
+
+

@@ -4,7 +4,6 @@ import me.joeleoli.frame.FrameAdapter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.utils.GameUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -19,12 +18,16 @@ public class LobbyAdapter implements FrameAdapter {
 
     @Override
     public List<String> getLines(Player player) {
-        List<String> toReturn = new ArrayList<>();
+        List<String> lines = new ArrayList<>();
 
-        toReturn.add(ChatColor.RESET.toString() + "Online" + ChatColor.GRAY + ": " + ChatColor.DARK_RED +  Bukkit.getOnlinePlayers().size());
-        toReturn.add(ChatColor.RESET.toString() + "In fights" + ChatColor.GRAY + ": " + ChatColor.DARK_RED + AstroPlugin.getInstance().getQueueManager().getTotalInFight());
-        toReturn.add(ChatColor.RESET.toString() + "In queues" + ChatColor.GRAY + ": " + ChatColor.DARK_RED + AstroPlugin.getInstance().getQueueManager().getTotalInQueue());
+        AstroPlugin.getInstance().getConfiguration().getScoreboard().getConfig().getStringList("boards.lobby").forEach(line -> {
+            String copy = line.replace("{total-player-count}", String.valueOf(Bukkit.getOnlinePlayers().size()))
+                    .replace("{total-queue-count}", String.valueOf(AstroPlugin.getInstance().getQueueManager().getTotalInQueue()))
+                    .replace("{total-match-count}", String.valueOf(AstroPlugin.getInstance().getQueueManager().getTotalInFight()));
 
-        return toReturn;
+            lines.add(copy);
+        });
+
+        return lines;
     }
 }

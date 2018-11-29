@@ -3,8 +3,10 @@ package me.procedures.astro.runnables;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.match.Match;
-import me.procedures.astro.utils.CC;
+import me.procedures.astro.utils.MessageUtil;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
 @Getter @Setter
@@ -17,20 +19,18 @@ public class MatchStartRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
+        FileConfiguration messageConfig = AstroPlugin.getInstance().getConfiguration().getMessages().getConfig();
+
         switch (this.count) {
             case 0:
                 this.match.startMatch();
-                this.match.sendMessage(CC.PRIMARY + "The match has started.");
+                this.match.sendMessage(MessageUtil.color(messageConfig.getString("match.start")));
 
                 this.cancel();
                 return;
 
-            case 1:
-                this.match.sendMessage(CC.SECONDARY + "The match is starting in " + CC.PRIMARY + this.count + CC.SECONDARY + " second.");
-                break;
-
             default:
-                this.match.sendMessage(CC.SECONDARY + "The match is starting in " + CC.PRIMARY + this.count + CC.SECONDARY + " seconds.");
+                this.match.sendMessage(MessageUtil.color(messageConfig.getString("match.countdown").replace('$', Character.forDigit(this.count, 10))));
                 break;
         }
 
