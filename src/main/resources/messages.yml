@@ -3,16 +3,27 @@
 # Example: "&4Welcome to Astro Practice!"
 
 join-messages:
-  - "&4Duel other players with /duel [Player]"
+  -
+  -
+  -
 
 match:
   # Seconds is represented with an '$'
-  countdown: "&4The match starts in $ second(s)."
-  start: "The match has started!"
+  countdown: "&9Match starting in &3$ &9second(s)."
+  start: "&aThe match has started!"
 
-queue:
-  # The name of the ladder is represented with "{ladder-name}"
-  added: "You have been added to the {ladder-name} queue!"
-  removed: "You have been removed from the {ladder-name} queue!"
+  # Opponents are represented with {opponent}
+  opponents: "&6Your Opponent: &b{opponent}"
+
+  # Killer is represented with {killer}
+  # Player                     {player}
+  death: "&b{player} &6was killed by &b{killer}."
+
+duel:
+  # The name of the player is represented with {player-(target / player)}
+  #                 ladder                     {ladder}
+  #                 button                     {accept-deny}
+  player: "You have sent {player-target} a {ladder} duel request."
+  target: "{player-player} has sent you a {ladder} duel request. {accept} {deny}"
 
 

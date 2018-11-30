@@ -1,4 +1,4 @@
-package me.procedures.astro.commands;
+package me.procedures.astro.listeners;
 
 import lombok.RequiredArgsConstructor;
 import me.procedures.astro.AstroPlugin;

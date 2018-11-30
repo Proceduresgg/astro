@@ -10,6 +10,7 @@ import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
+import me.procedures.astro.utils.MessageUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -50,9 +51,6 @@ public abstract class AbstractQueue implements Listener {
 
         this.queue.add(queueData);
 
-        player.sendMessage(this.plugin.getConfiguration().getMessages().getConfig().getString("queue.added")
-                .replace("{ladder-name}", ChatColor.stripColor(this.ladder.getName())));
-
         /* int min = playerProfile.getRatings().get(this.ladder).getRating() - 250;
         int max = playerProfile.getRatings().get(this.ladder).getRating() + 250;
 
@@ -62,15 +60,11 @@ public abstract class AbstractQueue implements Listener {
 
     public void removeFromQueue(Player player) {
         if (player.isOnline()) {
-            PlayerProfile playerProfile = this.plugin.getProfileManager().getProfile(player);
-
-            playerProfile.setState(PlayerState.LOBBY);
-            player.getInventory().setContents(StateInventories.LOBBY.getContents());
+            this.plugin.getProfileManager().getProfile(player).setState(PlayerState.LOBBY);
 
             GameUtil.resetPlayer(player);
 
-            player.sendMessage(this.plugin.getConfiguration().getMessages().getConfig().getString("queue.removed")
-                    .replace("{ladder-name}", ChatColor.stripColor(this.ladder.getName())));
+            player.getInventory().setContents(StateInventories.LOBBY.getContents());
         }
 
         this.queue.remove(this.getQueueData(player));

@@ -7,16 +7,19 @@
 # Opponent - {opponent-(1 / 2)}"
 
 # This is the name which will be displayed on the scoreboard
-server-name: "Astro"
+server-name: "&b&lAstro"
+
+# This is the ip displayed at the bottom of the scoreboard
+server-ip: "&bastro.gg"
 
 boards:
   # Each state has a different board
   lobby:
-    - "Online: {total-player-count}"
-    - "In Queue: {total-queue-count}"
-    - "In Fights: {total-match-count}"
+    - "Online: &b{total-player-count}"
+    - "In Queue: &b{total-queue-count}"
+    - "In Fights: &b{total-match-count}"
 
   match:
     - "{opponent-1}"
-    - "vs"
+    - "&bvs"
     - "{opponent-2}"

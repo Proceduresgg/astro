@@ -4,7 +4,7 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.joeleoli.frame.Frame;
-import me.procedures.astro.commands.BlockListener;
+import me.procedures.astro.listeners.BlockListener;
 import me.procedures.astro.commands.DuelCommand;
 import me.procedures.astro.commands.KitCommand;
 import me.procedures.astro.commands.LadderCommand;
@@ -12,6 +12,7 @@ import me.procedures.astro.config.PracticeConfiguration;
 import me.procedures.astro.data.Mongo;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.listeners.ChatListener;
+import me.procedures.astro.listeners.EnviornmentListener;
 import me.procedures.astro.listeners.PlayerListener;
 import me.procedures.astro.managers.LadderManager;
 import me.procedures.astro.managers.MenuManager;
@@ -48,7 +49,7 @@ public class AstroPlugin extends JavaPlugin {
         this.queueManager = new QueueManager(this);
         this.menuManager = new MenuManager(this);
 
-        this.registerListeners(new PlayerListener(this), new ChatListener(this), new BlockListener(this));
+        this.registerListeners(new PlayerListener(this), new ChatListener(this), new BlockListener(this), new EnviornmentListener());
         this.registerCommands(new PaperCommandManager(this));
 
         new Frame(this, new AdapterResolver());

@@ -3,8 +3,10 @@ package me.procedures.astro.listeners;
 import lombok.AllArgsConstructor;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.match.Match;
+import me.procedures.astro.match.MatchStatus;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
+import me.procedures.astro.queue.AbstractQueue;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
 import me.procedures.astro.utils.MessageUtil;
@@ -14,12 +16,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 @AllArgsConstructor
 public class PlayerListener implements Listener {
@@ -42,7 +42,8 @@ public class PlayerListener implements Listener {
         PlayerUtil.clearChat(player);
         GameUtil.teleportToSpawn(player);
 
-        this.plugin.getConfiguration().getMessages().getConfig().getStringList("join-messages").forEach(message -> player.sendMessage(MessageUtil.color(message)));
+        this.plugin.getConfiguration().getMessages().getConfig().getStringList("join-messages")
+                .forEach(message -> player.sendMessage(MessageUtil.color(message)));
 
         event.setJoinMessage(null);
     }
@@ -122,12 +123,25 @@ public class PlayerListener implements Listener {
                 break;
 
             case FIGHTING:
-                if (item.getType() == Material.BOOK) {
-                    Match match = profile.getMatch();
+                Match match = profile.getMatch();
 
-                    if (match != null) {
+                if (match != null) {
+                    if (item.getType() == Material.BOOK) {
                         match.getLadder().getDefaultInventory().apply(player);
+
+                    } else if (item.getType() == Material.ENDER_PEARL) {
+                        if (match.getStatus() == MatchStatus.STARTING) {
+                            event.setCancelled(true);
+                        }
                     }
+                }
+                break;
+
+            case QUEUING:
+                if (item.getType() == Material.INK_SACK) {
+                    AbstractQueue queue = profile.getQueue();
+
+                    queue.removeFromQueue(player);
                 }
                 break;
 
@@ -156,6 +170,9 @@ public class PlayerListener implements Listener {
         if (!match.getPlayers().containsKey(damager)) {
             event.setCancelled(true);
 
+        } else if (match.getStatus() == MatchStatus.STARTING) {
+            event.setCancelled(true);
+
         } else if (match.getPlayers().get(player).getTeam() == match.getPlayers().get(damager).getTeam()) {
             event.setCancelled(true);
 
@@ -163,7 +180,9 @@ public class PlayerListener implements Listener {
             event.setCancelled(true);
 
         } else if (player.getHealth() - event.getFinalDamage() <= 0.0) {
-            match.handleDeath(player, player.getLocation(), CC.PRIMARY + player.getName() + CC.TERTIARY + " has been slain by " + CC.PRIMARY + damager.getName() + CC.TERTIARY + ".");
+            match.handleDeath(player, player.getLocation(), this.plugin.getConfiguration().getString("match.death")
+                    .replace("{player}", player.getName())
+                    .replace("{killer}", damager.getName()));
         }
     }
 
@@ -184,6 +203,13 @@ public class PlayerListener implements Listener {
 
         if (profile.getState() != PlayerState.FIGHTING && profile.getState() != PlayerState.KIT_EDITOR) {
              event.setCancelled(true);
+        } else {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    event.getItemDrop().remove();
+                }
+            }.runTaskTimer(this.plugin, 0, 60L);
         }
     }
 
@@ -194,5 +220,7 @@ public class PlayerListener implements Listener {
 
         profile.getMatch().handleDeath(player, player.getLocation(), CC.PRIMARY + player.getName() + CC.TERTIARY + " has died.");
 
+        event.setDeathMessage(null);
+        event.getDrops().forEach(item -> item.setType(Material.AIR));
     }
 }

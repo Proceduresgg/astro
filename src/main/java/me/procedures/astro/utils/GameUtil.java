@@ -33,10 +33,8 @@ public class GameUtil {
     public static void teleportToSpawn(Player player) {
         Bukkit.getServer().getOnlinePlayers().forEach(onlinePlayer -> {
             onlinePlayer.hidePlayer(player);
+            player.hidePlayer(onlinePlayer);
 
-            if (!player.hasPermission("astro.donor")) {
-                player.hidePlayer(onlinePlayer);
-            }
         });
 
         GameUtil.resetPlayer(player);

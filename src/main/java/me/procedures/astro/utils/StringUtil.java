@@ -20,7 +20,7 @@ public class StringUtil {
 
         StringBuilder playerNames = new StringBuilder(players.get(0).getDisplayName());
         players.stream()
-                .filter(player -> playerNames.toString().contains(player.getDisplayName()))
+                .filter(player -> player != players.get(0))
                 .forEach(player -> playerNames.append(", ").append(player.getName()));
 
         return playerNames.toString();
