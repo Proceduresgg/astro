@@ -7,6 +7,7 @@ import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.ItemBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,9 +58,9 @@ public class UnrankedMenu extends AbstractMenu { // yeah i know i was just testi
         this.getPlugin().getQueueManager().getQueues().values().forEach(queue -> {
             Ladder ladder = queue.getLadder();
 
-            contents.add(new ItemBuilder(ladder.getDisplayItem().getType(), CC.PRIMARY + ladder.getName(), 1,
-                    CC.RESET + "In Queue: " + CC.PRIMARY + queue.getQueue().size(),
-                    CC.RESET + "In Fight: " + CC.PRIMARY + queue.getPlayingAmount()).getItem());
+            contents.add(new ItemBuilder(ladder.getDisplayItem().getType(), ChatColor.AQUA + ladder.getName(), 1,
+                    CC.RESET + "In Queue: " + ChatColor.AQUA + queue.getQueue().size(),
+                    CC.RESET + "In Fight: " + ChatColor.AQUA + queue.getPlayingAmount()).getItem());
         });
 
         Inventory inventory = Bukkit.createInventory(null, this.getSize(), this.getTitle());

@@ -16,7 +16,7 @@ public class MenuManager {
 
     public MenuManager(AstroPlugin plugin) {
         this.plugin = plugin;
-        this.unrankedInventory = new UnrankedMenu(this.plugin, ChatColor.RED + "Unranked Menu Queue", 27);
+        this.unrankedInventory = new UnrankedMenu(this.plugin, ChatColor.GOLD.toString() + ChatColor.BOLD + "Select a ladder..", 27);
         this.duelMenuInventory = new DuelMenu(this.plugin, ChatColor.RED + "Choose ladder", 27);
     }
 }

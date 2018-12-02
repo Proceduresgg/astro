@@ -14,10 +14,7 @@ import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.listeners.ChatListener;
 import me.procedures.astro.listeners.EnviornmentListener;
 import me.procedures.astro.listeners.PlayerListener;
-import me.procedures.astro.managers.LadderManager;
-import me.procedures.astro.managers.MenuManager;
-import me.procedures.astro.managers.ProfileManager;
-import me.procedures.astro.managers.QueueManager;
+import me.procedures.astro.managers.*;
 import me.procedures.astro.scoreboard.AdapterResolver;
 import me.procedures.astro.utils.CC;
 import org.bukkit.event.Listener;
@@ -36,7 +33,9 @@ public class AstroPlugin extends JavaPlugin {
     private LadderManager ladderManager;
     private ProfileManager profileManager;
     private QueueManager queueManager;
+    private ArenaManager arenaManager;
     private MenuManager menuManager;
+    private SpectatorManager spectatorManager;
 
     public void onEnable() {
         instance = this;
@@ -47,7 +46,9 @@ public class AstroPlugin extends JavaPlugin {
         this.ladderManager = new LadderManager(this);
         this.profileManager = new ProfileManager(this);
         this.queueManager = new QueueManager(this);
+        this.arenaManager = new ArenaManager(this);
         this.menuManager = new MenuManager(this);
+        this.spectatorManager = new SpectatorManager(this);
 
         this.registerListeners(new PlayerListener(this), new ChatListener(this), new BlockListener(this), new EnviornmentListener());
         this.registerCommands(new PaperCommandManager(this));
@@ -57,6 +58,7 @@ public class AstroPlugin extends JavaPlugin {
 
     public void onDisable() {
         this.ladderManager.saveLadders();
+        this.arenaManager.saveArenas();
       //this.profileManager.saveProfiles();
     }
 

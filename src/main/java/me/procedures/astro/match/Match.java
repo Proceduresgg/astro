@@ -123,8 +123,15 @@ public class Match {
                 .map(MatchPlayer::isDead)
                 .collect(Collectors.toList());
 
+        MatchTeam winner = MatchTeam.getOpposite(this.players.get(player).getTeam());
+
         if (!alive.contains(false)) {
-            this.endMatch(MatchTeam.getOpposite(this.players.get(player).getTeam()));
+            this.endMatch(winner);
+
+        } else {
+            if (player.isOnline()) {
+                this.plugin.getSpectatorManager().startSpectating(player, this.getTeam(winner).get(0));
+            }
         }
     }
 
@@ -163,7 +170,7 @@ public class Match {
     }
 
     public void cleanSpectators() {
-
+        this.spectators.forEach(GameUtil::teleportToSpawn);
     }
 
     public void playSound(Sound sound, Location location, float idk2) {

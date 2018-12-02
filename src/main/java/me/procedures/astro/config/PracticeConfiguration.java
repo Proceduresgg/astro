@@ -2,11 +2,12 @@ package me.procedures.astro.config;
 
 import lombok.Getter;
 import me.procedures.astro.utils.MessageUtil;
-
-import java.util.List;
+import org.bukkit.ChatColor;
 
 @Getter
 public class PracticeConfiguration {
+
+    public static final String COMING_SOON_MESSAGE = ChatColor.GRAY.toString() + "This feature is currently under development, we'll update you once it's complete.";
 
     private FileConfig messages = new FileConfig("messages.yml");
     private FileConfig scoreboard = new FileConfig("scoreboard.yml");

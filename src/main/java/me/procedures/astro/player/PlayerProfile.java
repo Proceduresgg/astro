@@ -9,6 +9,7 @@ import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.queue.AbstractQueue;
 import me.procedures.astro.utils.ItemBuilder;
+import me.procedures.astro.timer.Timer;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,8 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-@Getter
-@Setter
+@Getter @Setter
 public class PlayerProfile {
 
     private final UUID uuid;
@@ -31,10 +31,10 @@ public class PlayerProfile {
     private Match match;
     private AbstractQueue queue;
 
+    private Timer enderpearlTimer;
+
     public PlayerProfile(UUID identifier) {
         this.uuid = identifier;
-
-        AstroPlugin.getInstance().getLadderManager().getLadders().values().forEach(ladder -> this.ratings.put(ladder, 1000));
     }
 
     public ItemStack[] getKits(Ladder ladder) { // TODO: Make it return all the player kits
@@ -52,5 +52,19 @@ public class PlayerProfile {
                 this.ratings.put(ladder, document.getInteger(ladder.getName()) != null ? document.getInteger(ladder.getName()) : 1000);
             });
         }
+    }
+
+    public boolean canPearl() {
+        if (this.enderpearlTimer != null && this.enderpearlTimer.active()) {
+            return false;
+
+        } else {
+            this.enderpearlTimer = new Timer(16, Bukkit.getPlayer(this.uuid));
+            return true;
+        }
+    }
+
+    public int getElo(Ladder ladder) {
+        return this.ratings.computeIfAbsent(ladder, k -> 1000);
     }
 }

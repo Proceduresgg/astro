@@ -6,6 +6,7 @@ import lombok.Setter;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.utils.MessageUtil;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 @AllArgsConstructor
 public class MatchStartRunnable extends BukkitRunnable {
 
-    private Match match;
+    private final Match match;
 
     private int count;
 
@@ -25,6 +26,7 @@ public class MatchStartRunnable extends BukkitRunnable {
             case 0:
                 this.match.startMatch();
                 this.match.sendMessage(MessageUtil.color(messageConfig.getString("match.start")));
+                this.match.sendMessage(ChatColor.RED.toString() + "Your scoreboard was disabled since the match started.");
 
                 this.cancel();
                 return;

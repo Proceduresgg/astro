@@ -3,6 +3,7 @@ package me.procedures.astro.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import me.procedures.astro.AstroPlugin;
+import me.procedures.astro.config.PracticeConfiguration;
 import me.procedures.astro.utils.CC;
 import org.bukkit.entity.Player;
 
@@ -20,11 +21,6 @@ public class DuelCommand extends BaseCommand {
     @CommandAlias("duel")
     @CommandCompletion("@players")
     public void onDefault(Player player, Player target) {
-        if (player == target) {
-            player.sendMessage(CC.PRIMARY + "You cannot duel yourself.");
-            return;
-        }
-
-        this.plugin.getMenuManager().getDuelMenuInventory().open(player);
+        player.sendMessage(PracticeConfiguration.COMING_SOON_MESSAGE);
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class AdapterResolver implements FrameAdapter {
 
-    private Map<PlayerState, FrameAdapter> adapters = new HashMap<>();
+    private final Map<PlayerState, FrameAdapter> adapters = new HashMap<>();
 
     public AdapterResolver() {
         this.adapters.put(PlayerState.LOBBY, new LobbyAdapter());

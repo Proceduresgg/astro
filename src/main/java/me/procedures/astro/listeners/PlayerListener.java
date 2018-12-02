@@ -2,6 +2,7 @@ package me.procedures.astro.listeners;
 
 import lombok.AllArgsConstructor;
 import me.procedures.astro.AstroPlugin;
+import me.procedures.astro.config.PracticeConfiguration;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.match.MatchStatus;
 import me.procedures.astro.player.PlayerProfile;
@@ -10,7 +11,6 @@ import me.procedures.astro.queue.AbstractQueue;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
 import me.procedures.astro.utils.MessageUtil;
-import me.procedures.astro.utils.PlayerUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,7 +39,6 @@ public class PlayerListener implements Listener {
 
         profile.setState(PlayerState.LOBBY);
 
-        PlayerUtil.clearChat(player);
         GameUtil.teleportToSpawn(player);
 
         this.plugin.getConfiguration().getMessages().getConfig().getStringList("join-messages")
@@ -55,16 +54,12 @@ public class PlayerListener implements Listener {
 
         event.setQuitMessage(null);
 
-        System.out.println("LOL");
-
         switch (profile.getState()) {
             case FIGHTING:
                 profile.getMatch().handleDeath(player, player.getLocation(), player.getDisplayName() + " has left the match.");
                 break;
 
             case QUEUING:
-                System.out.println("FF");
-
                 profile.getQueue().removeFromQueue(player);
                 break;
 
@@ -117,8 +112,17 @@ public class PlayerListener implements Listener {
                 if (item.getType() == Material.IRON_SWORD) {
                     this.plugin.getMenuManager().getUnrankedInventory().open(player);
 
+                } else if (item.getType() == Material.DIAMOND_SWORD) {
+                    player.sendMessage(PracticeConfiguration.COMING_SOON_MESSAGE);
+
                 } else if (item.getType() == Material.INK_SACK) {
                     GameUtil.teleportToSpawn(player);
+
+                } else if (item.getType() == Material.NAME_TAG) {
+                    player.sendMessage(PracticeConfiguration.COMING_SOON_MESSAGE);
+
+                } else if (item.getType() == Material.BOOK) {
+                    player.sendMessage(PracticeConfiguration.COMING_SOON_MESSAGE);
                 }
                 break;
 
@@ -131,6 +135,9 @@ public class PlayerListener implements Listener {
 
                     } else if (item.getType() == Material.ENDER_PEARL) {
                         if (match.getStatus() == MatchStatus.STARTING) {
+                            event.setCancelled(true);
+
+                        } else if (!profile.canPearl()) {
                             event.setCancelled(true);
                         }
                     }
@@ -180,6 +187,7 @@ public class PlayerListener implements Listener {
             event.setCancelled(true);
 
         } else if (player.getHealth() - event.getFinalDamage() <= 0.0) {
+            player.setHealth(20);
             match.handleDeath(player, player.getLocation(), this.plugin.getConfiguration().getString("match.death")
                     .replace("{player}", player.getName())
                     .replace("{killer}", damager.getName()));

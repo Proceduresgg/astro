@@ -3,7 +3,7 @@
 # Example: "&4Welcome to Astro Practice!"
 
 join-messages:
-  -
+  - "&fWelcome to &bAstro Practice&f, currently we're using &5prplz's &fkb patch which can be found here: &9&nhttps://gist.github.com/prplz."
   -
   -
 
@@ -13,11 +13,11 @@ match:
   start: "&aThe match has started!"
 
   # Opponents are represented with {opponent}
-  opponents: "&6Your Opponent: &b{opponent}"
+  opponents: "&eYour Opponent: &a{opponent}"
 
   # Killer is represented with {killer}
   # Player                     {player}
-  death: "&b{player} &6was killed by &b{killer}."
+  death: "&a{player} &ewas killed by &a{killer}."
 
 duel:
   # The name of the player is represented with {player-(target / player)}
