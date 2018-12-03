@@ -3,7 +3,7 @@
 # Example: "&4Welcome to Astro Practice!"
 
 join-messages:
-  - "&fWelcome to &bAstro Practice&f, currently we're using &5prplz's &fkb patch which can be found here: &9&nhttps://gist.github.com/prplz."
+  - "&eWelcome to &bAstro Practice&e, special thanks &dAustin&6, &dJoel&e, and &dDewgs &efor assisting with this project, and &5prplz &efor the knockback which can be found here: &9&nhttps://gist.github.com/prplz&e."
   -
   -
 

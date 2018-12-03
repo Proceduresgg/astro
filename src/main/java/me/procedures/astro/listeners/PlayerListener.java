@@ -110,7 +110,7 @@ public class PlayerListener implements Listener {
         switch (profile.getState()) {
             case LOBBY:
                 if (item.getType() == Material.IRON_SWORD) {
-                    this.plugin.getMenuManager().getUnrankedInventory().open(player);
+                    player.openInventory(this.plugin.getMenuManager().getRankedMenu().getInventory());
 
                 } else if (item.getType() == Material.DIAMOND_SWORD) {
                     player.sendMessage(PracticeConfiguration.COMING_SOON_MESSAGE);
@@ -138,6 +138,7 @@ public class PlayerListener implements Listener {
                             event.setCancelled(true);
 
                         } else if (!profile.canPearl()) {
+                            System.out.println("LOL");
                             event.setCancelled(true);
                         }
                     }
