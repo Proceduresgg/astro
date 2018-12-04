@@ -110,10 +110,10 @@ public class PlayerListener implements Listener {
         switch (profile.getState()) {
             case LOBBY:
                 if (item.getType() == Material.IRON_SWORD) {
-                    player.openInventory(this.plugin.getMenuManager().getRankedMenu().getInventory());
+                    player.openInventory(this.plugin.getMenuManager().getUnrankedMenu().getInventory());
 
                 } else if (item.getType() == Material.DIAMOND_SWORD) {
-                    player.sendMessage(PracticeConfiguration.COMING_SOON_MESSAGE);
+                    player.openInventory(this.plugin.getMenuManager().getRankedMenu().getInventory());
 
                 } else if (item.getType() == Material.INK_SACK) {
                     GameUtil.teleportToSpawn(player);

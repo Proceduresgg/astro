@@ -9,6 +9,7 @@ import me.procedures.astro.match.team.MatchPlayer;
 import me.procedures.astro.match.team.MatchTeam;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
+import me.procedures.astro.queue.AbstractQueue;
 import me.procedures.astro.runnables.MatchStartRunnable;
 import me.procedures.astro.utils.GameUtil;
 import me.procedures.astro.utils.PlayerUtil;
@@ -36,6 +37,7 @@ public class Match {
     private final List<MatchOption> matchOptions;
 
     private UUID uuid;
+    private AbstractQueue queue;
     private Ladder ladder;
     private Arena arena;
 
@@ -43,11 +45,12 @@ public class Match {
 
     private long startTime;
 
-    public Match(AstroPlugin plugin, Ladder ladder, List<Player> teamOne, List<Player> teamTwo, List<MatchOption> matchOptions) {
+    public Match(AstroPlugin plugin, AbstractQueue queue, Ladder ladder, List<Player> teamOne, List<Player> teamTwo, List<MatchOption> matchOptions) {
         this.plugin = plugin;
+        this.uuid = UUID.randomUUID();
+        this.queue = queue;
         this.ladder = ladder;
         this.matchOptions = matchOptions;
-        this.uuid = UUID.randomUUID();
 
         teamOne.forEach(player -> {
             this.players.put(player, new MatchPlayer(player, MatchTeam.RED, false));
@@ -65,8 +68,8 @@ public class Match {
         new MatchStartRunnable(this, 5).runTaskTimer(this.plugin, 0L, 20L);
     }
 
-    public Match(AstroPlugin plugin, Ladder ladder, Player playerOne, Player playerTwo, MatchOption option) {
-        this(plugin, ladder, Collections.singletonList(playerOne), Collections.singletonList(playerTwo), Collections.singletonList(option));
+    public Match(AstroPlugin plugin, AbstractQueue queue, Ladder ladder, Player playerOne, Player playerTwo, MatchOption option) {
+        this(plugin, queue, ladder, Collections.singletonList(playerOne), Collections.singletonList(playerTwo), Collections.singletonList(option));
     }
 
     public void startMatch() {
@@ -83,8 +86,7 @@ public class Match {
         winners.forEach(entry -> GameUtil.resetPlayer(entry.getKey()));
 
         this.resetPlayers();
-
-        this.plugin.getQueueManager().getQueues().get(this.ladder).handleMatch(this);
+        this.queue.handleMatch(this);
 
         new BukkitRunnable() {
             @Override

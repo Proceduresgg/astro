@@ -13,7 +13,7 @@ public class StringUtil {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
 
-    public static String getPlayerNames(List<Player> players) {
+    public static String getPlayerNames(List<Player> players, boolean ranked) {
         if (players.size() == 0) {
             return "";
         }

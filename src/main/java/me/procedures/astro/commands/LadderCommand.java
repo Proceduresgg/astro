@@ -9,7 +9,6 @@ import me.procedures.astro.kit.KitInventory;
 import me.procedures.astro.ladder.Ladder;
 import me.procedures.astro.managers.LadderManager;
 import me.procedures.astro.managers.QueueManager;
-import me.procedures.astro.queue.type.UnrankedQueue;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.InventoryUtil;
 import org.bson.Document;
@@ -41,7 +40,7 @@ public class LadderCommand extends BaseCommand {
         player.sendMessage(CC.PRIMARY + "That ladder has been created.");
 
         this.ladderManager.getLadders().put(name, ladder);
-        this.queueManager.getQueues().put(ladder, new UnrankedQueue(this.queueManager.getPlugin(), ladder));
+        this.queueManager.createQueues(ladder);
     }
 
     @Subcommand("delete")

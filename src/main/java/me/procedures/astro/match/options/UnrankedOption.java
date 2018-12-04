@@ -10,13 +10,13 @@ import me.procedures.astro.utils.StringUtil;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
-public class Unranked implements MatchOption {
+public class UnrankedOption implements MatchOption {
 
     @Override
     public void startPreGame(Match match) {
         match.getPlayers().forEach((player, matchPlayer) -> {
             player.sendMessage(MessageUtil.color(AstroPlugin.getInstance().getConfiguration().getMessages().getConfig().getString("match.opponents")
-                    .replace("{opponent}", StringUtil.getPlayerNames(match.getTeam(MatchTeam.getOpposite(matchPlayer.getTeam()))))));
+                    .replace("{opponent}", StringUtil.getPlayerNames(match.getTeam(MatchTeam.getOpposite(matchPlayer.getTeam())), false))));
         });
     }
 

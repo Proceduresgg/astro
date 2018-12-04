@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 /**
  * Made for flexibility. With this, you can do whatever you need
- * depending on the type of match (Ranked, Unranked, Party Fight).
+ * depending on the type of match (Ranked, UnrankedOption, Party Fight).
  */
 
 public interface MatchOption {

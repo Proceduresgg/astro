@@ -8,12 +8,13 @@ import me.procedures.astro.queue.AbstractQueue;
 import me.procedures.astro.queue.QueueData;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.Iterator;
 
-public class UnrankedQueue extends AbstractQueue {
+public class RankedQueue extends AbstractQueue {
 
-    public UnrankedQueue(AstroPlugin plugin, Ladder ladder) {
+    public RankedQueue(AstroPlugin plugin, Ladder ladder) {
         super(plugin, ladder);
+
         this.startQueueTask();
     }
 
