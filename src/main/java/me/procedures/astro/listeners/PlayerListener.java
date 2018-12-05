@@ -3,6 +3,8 @@ package me.procedures.astro.listeners;
 import lombok.AllArgsConstructor;
 import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.config.PracticeConfiguration;
+import me.procedures.astro.inventories.RankedMenu;
+import me.procedures.astro.inventories.UnrankedMenu;
 import me.procedures.astro.match.Match;
 import me.procedures.astro.match.MatchStatus;
 import me.procedures.astro.player.PlayerProfile;
@@ -11,6 +13,7 @@ import me.procedures.astro.queue.AbstractQueue;
 import me.procedures.astro.utils.CC;
 import me.procedures.astro.utils.GameUtil;
 import me.procedures.astro.utils.MessageUtil;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -110,10 +113,10 @@ public class PlayerListener implements Listener {
         switch (profile.getState()) {
             case LOBBY:
                 if (item.getType() == Material.IRON_SWORD) {
-                    player.openInventory(this.plugin.getMenuManager().getUnrankedMenu().getInventory());
+                    player.openInventory(new UnrankedMenu().getInventory());
 
                 } else if (item.getType() == Material.DIAMOND_SWORD) {
-                    player.openInventory(this.plugin.getMenuManager().getRankedMenu().getInventory());
+                    player.openInventory(new RankedMenu(player).getInventory());
 
                 } else if (item.getType() == Material.INK_SACK) {
                     GameUtil.teleportToSpawn(player);

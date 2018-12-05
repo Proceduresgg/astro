@@ -19,6 +19,5 @@ public class DuelCommand extends BaseCommand {
     @CommandAlias("duel")
     @CommandCompletion("@players")
     public void onDefault(Player player, Player target) {
-        player.openInventory(this.plugin.getMenuManager().getDuelMenu().getInventory());
     }
 }

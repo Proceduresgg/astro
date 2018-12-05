@@ -17,8 +17,8 @@ import org.bukkit.inventory.ItemStack;
 public enum StateInventories {
 
     LOBBY(new ItemStack[]{
-            new ItemBuilder(Material.IRON_SWORD, ChatColor.WHITE + ChatColor.BOLD.toString() + "Join" + ChatColor.YELLOW + ChatColor.BOLD.toString() + " UnrankedOption " + ChatColor.WHITE + ChatColor.BOLD.toString() + "Queue", ChatColor.GRAY + "Right click to queue unranked.").getItem(),
-            new ItemBuilder(Material.DIAMOND_SWORD, ChatColor.WHITE + ChatColor.BOLD.toString() + "Join" + ChatColor.GREEN + ChatColor.BOLD.toString() + " Ranked " + ChatColor.WHITE + ChatColor.BOLD.toString() + "Queue", ChatColor.GRAY + "Right click to queue ranked.").getItem(),
+            new ItemBuilder(Material.IRON_SWORD, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Unranked Queue", ChatColor.GRAY + "Right click to queue unranked.").getItem(),
+            new ItemBuilder(Material.DIAMOND_SWORD, ChatColor.GREEN + ChatColor.BOLD.toString() + "Ranked Queue", ChatColor.GRAY + "Right click to queue ranked.").getItem(),
             null,
             null,
             new ItemBuilder(Material.NAME_TAG, ChatColor.RED + ChatColor.BOLD.toString() + "Create Party",  ChatColor.GRAY + "Right Click to create a party.").getItem(),
