@@ -32,10 +32,14 @@ public class ArenaManager {
     public Arena getRandomArena() {
         List<Arena> arenas = this.arenas.values()
                 .stream()
-                .filter(arena -> arena.getType() == ArenaType.SINGULAR)
+                //.filter(arena -> arena.getType() == ArenaType.SINGULAR)
+                //.filter(arena -> arena.getSpawnOne() == null)
+                //.filter(arena -> arena.getSpawnTwo() == null)
                 .collect(Collectors.toList());
 
-        return arenas.size() != 0 ? arenas.get(ThreadLocalRandom.current().nextInt(0, arenas.size())) : null;
+        System.out.println(arenas.size());
+
+        return arenas.get(ThreadLocalRandom.current().nextInt(0, arenas.size() - 1));
     }
 
     public Arena getSingularArena(Ladder ladder) {

@@ -23,6 +23,7 @@ public class GameUtil {
         player.setHealth(20);
         player.setFoodLevel(20);
         player.setFireTicks(1);
+        player.setFallDistance(0);
 
         player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
 

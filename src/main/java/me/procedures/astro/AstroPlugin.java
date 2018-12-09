@@ -4,9 +4,10 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 import me.joeleoli.frame.Frame;
+import me.procedures.astro.arena.Arena;
+import me.procedures.astro.commands.ArenaCommand;
 import me.procedures.astro.listeners.*;
 import me.procedures.astro.commands.DuelCommand;
-import me.procedures.astro.commands.KitCommand;
 import me.procedures.astro.commands.LadderCommand;
 import me.procedures.astro.config.PracticeConfiguration;
 import me.procedures.astro.data.Mongo;
@@ -66,7 +67,7 @@ public class AstroPlugin extends JavaPlugin {
         this.registerContexts(commandManager);
         this.registerDependencies(commandManager);
 
-        Arrays.asList(new LadderCommand(), new DuelCommand(), new KitCommand())
+        Arrays.asList(new LadderCommand(), new ClearEntitiesCommand(), new DuelCommand(), new ArenaCommand())
                 .forEach(commandManager::registerCommand);
     }
 
@@ -80,6 +81,17 @@ public class AstroPlugin extends JavaPlugin {
             }
 
             return this.ladderManager.getLadders().get(arg);
+        });
+
+        commandManager.getCommandContexts().registerContext(Arena.class, c -> {
+            String arg = c.popFirstArg();
+
+            if (!this.arenaManager.getArenas().containsKey(arg)) {
+                c.getSender().sendMessage(CC.PRIMARY + "The specified arena does not exist.");
+                throw new InvalidCommandArgument(true);
+            }
+
+            return this.arenaManager.getArenas().get(arg);
         });
     }
 

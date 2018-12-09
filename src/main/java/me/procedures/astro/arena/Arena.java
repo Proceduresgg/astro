@@ -16,14 +16,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.Arrays;
+import java.util.logging.Level;
 
 @Getter @Setter
 public class Arena {
 
     private String name;
 
-    private AstroLocation spawnOne;
-    private AstroLocation spawnTwo;
+    private AstroLocation spawnOne, spawnTwo;
 
     private ArenaType type = ArenaType.MULTI;
 
@@ -36,9 +36,17 @@ public class Arena {
 
     public void save() {
         Document document = new Document("name", this.name)
-                .append("spawn-one", LocationUtil.serializeAstroLocation(this.spawnOne))
-                .append("spawn-two", LocationUtil.serializeAstroLocation(this.spawnTwo))
                 .append("arena-type", this.type.toString());
+
+        if (this.spawnOne != null) {
+            document.append("spawn-one", LocationUtil.serializeAstroLocation(this.spawnOne));
+        }
+
+        if (this.spawnTwo != null) {
+            document.append("spawn-two", LocationUtil.serializeAstroLocation(this.spawnTwo));
+        }
+
+        System.out.println("Saved " + this.name);
 
         AstroPlugin.getInstance().getMongo().getPracticeDatabase().getCollection("arenas").replaceOne(Filters.eq("name", this.name), document, new ReplaceOptions().upsert(true));
     }
@@ -49,8 +57,18 @@ public class Arena {
             this.spawnTwo = LocationUtil.deserializeAstroLocation(document.getString("spawn-two"));
             this.type = ArenaType.valueOf(document.getString("arena-type"));
 
+            System.out.println("Loaded " + this.name);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Location getSpawnOne() {
+        return this.spawnOne.toLocation();
+    }
+
+    public Location getSpawnTwo() {
+        return this.spawnTwo.toLocation();
     }
 }

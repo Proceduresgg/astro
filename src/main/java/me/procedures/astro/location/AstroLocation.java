@@ -1,8 +1,8 @@
 package me.procedures.astro.location;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 /**
@@ -34,5 +34,9 @@ public class AstroLocation {
         this.z = z;
         this.yaw = yaw;
         this.pitch = pitch;
+    }
+
+    public Location toLocation() {
+        return new Location(Bukkit.getWorld(this.world), this.x, this.y, this.z, this.yaw, this.pitch);
     }
 }

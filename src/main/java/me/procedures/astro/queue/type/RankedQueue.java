@@ -20,7 +20,7 @@ public class RankedQueue extends AbstractQueue {
 
     @Override
     public void createMatch(QueueData playerOne, QueueData playerTwo) {
-        new Match(AstroPlugin.getInstance(), this, this.getLadder(), playerOne.getPlayer(), playerTwo.getPlayer(), new UnrankedOption());
+        new Match(AstroPlugin.getInstance(), AstroPlugin.getInstance().getArenaManager().getRandomArena(), this, this.getLadder(), playerOne.getPlayer(), playerTwo.getPlayer(), new UnrankedOption());
 
         this.setPlayingAmount(this.getPlayingAmount() + 2);
     }

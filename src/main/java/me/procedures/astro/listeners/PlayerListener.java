@@ -15,6 +15,7 @@ import me.procedures.astro.utils.GameUtil;
 import me.procedures.astro.utils.MessageUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -141,7 +142,6 @@ public class PlayerListener implements Listener {
                             event.setCancelled(true);
 
                         } else if (!profile.canPearl()) {
-                            System.out.println("LOL");
                             event.setCancelled(true);
                         }
                     }

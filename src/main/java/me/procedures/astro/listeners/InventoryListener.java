@@ -5,6 +5,7 @@ import me.procedures.astro.AstroPlugin;
 import me.procedures.astro.inventories.ConsumerMenu;
 import me.procedures.astro.player.PlayerProfile;
 import me.procedures.astro.player.PlayerState;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,7 +28,7 @@ public class InventoryListener implements Listener {
                 menu.getConsumer().accept(event);
             }
 
-        } else if (profile.getState() != PlayerState.FIGHTING) {
+        } else if (profile.getState() != PlayerState.FIGHTING && player.getGameMode() != GameMode.CREATIVE) {
             event.setCancelled(true);
         }
     }

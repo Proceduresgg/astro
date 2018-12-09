@@ -55,16 +55,19 @@ public class PlayerProfile {
     }
 
     public boolean canPearl() {
-        if (this.enderpearlTimer != null && this.enderpearlTimer.active()) {
-            return false;
+        if (this.enderpearlTimer == null) {
+            this.addPearlTimer();
 
-        } else {
-            this.enderpearlTimer = new Timer(16, Bukkit.getPlayer(this.uuid));
             return true;
-        }
+
+        } else return !this.enderpearlTimer.active();
     }
 
     public int getElo(Ladder ladder) {
         return this.ratings.computeIfAbsent(ladder, k -> 1000);
+    }
+
+    public void addPearlTimer() {
+        this.enderpearlTimer = new Timer(16, Bukkit.getPlayer(this.uuid));
     }
 }

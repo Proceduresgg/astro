@@ -16,6 +16,6 @@ public class LocationUtil {
     public static AstroLocation deserializeAstroLocation(String serializedLocation) {
         String[] split = serializedLocation.split("|");
 
-        return new AstroLocation(split[0], Double.valueOf(split[1]), Double.valueOf(split[2]), Double.valueOf(split[3]), Float.valueOf(split[4]), Float.valueOf(split[5]));
+        return new AstroLocation(split[0], Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), Float.parseFloat(split[4]), Float.parseFloat(split[5]));
     }
 }

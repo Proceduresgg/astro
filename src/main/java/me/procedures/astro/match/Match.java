@@ -36,7 +36,6 @@ public class Match {
     private final List<Player> spectators = new ArrayList<>();
     private final List<MatchOption> matchOptions;
 
-    private UUID uuid;
     private AbstractQueue queue;
     private Ladder ladder;
     private Arena arena;
@@ -45,21 +44,31 @@ public class Match {
 
     private long startTime;
 
-    public Match(AstroPlugin plugin, AbstractQueue queue, Ladder ladder, List<Player> teamOne, List<Player> teamTwo, List<MatchOption> matchOptions) {
+    public Match(AstroPlugin plugin, Arena arena, AbstractQueue queue, Ladder ladder, List<Player> teamOne, List<Player> teamTwo, List<MatchOption> matchOptions) {
         this.plugin = plugin;
-        this.uuid = UUID.randomUUID();
+        this.arena = arena;
         this.queue = queue;
         this.ladder = ladder;
         this.matchOptions = matchOptions;
 
         teamOne.forEach(player -> {
             this.players.put(player, new MatchPlayer(player, MatchTeam.RED, false));
-            player.teleport(Bukkit.getWorld("world").getSpawnLocation()); // TODO: Make the player teleport to the arena spawn points
+            if (arena == null) {
+                System.out.println("FJEFJ");
+            }
+            if (this.getArena().getSpawnOne() == null) {
+                System.out.println("LOOL");
+            }
+
+            if (player == null) {
+                System.out.println("LdfefOOL");
+            }
+            player.teleport(this.arena.getSpawnOne());
         });
 
         teamTwo.forEach(player -> {
             this.players.put(player, new MatchPlayer(player, MatchTeam.BLUE, false));
-            player.teleport(Bukkit.getWorld("world").getSpawnLocation());
+            player.teleport(this.arena.getSpawnTwo());
         });
 
         this.spawnPlayers();
@@ -68,8 +77,8 @@ public class Match {
         new MatchStartRunnable(this, 5).runTaskTimer(this.plugin, 0L, 20L);
     }
 
-    public Match(AstroPlugin plugin, AbstractQueue queue, Ladder ladder, Player playerOne, Player playerTwo, MatchOption option) {
-        this(plugin, queue, ladder, Collections.singletonList(playerOne), Collections.singletonList(playerTwo), Collections.singletonList(option));
+    public Match(AstroPlugin plugin, Arena arena, AbstractQueue queue, Ladder ladder, Player playerOne, Player playerTwo, MatchOption option) {
+        this(plugin, arena, queue, ladder, Collections.singletonList(playerOne), Collections.singletonList(playerTwo), Collections.singletonList(option));
     }
 
     public void startMatch() {
